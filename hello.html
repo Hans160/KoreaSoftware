@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>좌석 배치도 (드래그 앤 드롭)</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; display: flex; flex-direction: column; align-items: center; background-color: #f8f9fa; padding: 20px; user-select: none; }
+        h2 { color: #333; }
+        
+        /* 테이블 스타일 */
+        .container { display: flex; gap: 40px; margin-bottom: 30px; flex-wrap: wrap; justify-content: center; }
+        table { border-collapse: collapse; background-color: #fffdec; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+        td { border: 1px solid #999; width: 100px; height: 45px; text-align: center; font-size: 14px; position: relative; }
+
+        /* 드래그 가능 아이템 스타일 */
+        .name-tag {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            background-color: transparent;
+            transition: background-color 0.2s;
+        }
+        .name-tag:active { cursor: grabbing; }
+        .name-tag.dragging { opacity: 0.5; background-color: #e0e0e0; }
+        
+        /* 마우스가 올라간 자리 표시 */
+        td.drag-over { background-color: #ffeb3b; border: 2px dashed #f44336; }
+
+        /* 버튼 및 기타 UI */
+        .controls { margin-bottom: 20px; }
+        button { padding: 10px 25px; font-size: 16px; cursor: pointer; background-color: #4A90E2; color: white; border: none; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        button:hover { background-color: #357ABD; }
+        
+        .screen-line { width: 80%; border-top: 2px solid #ccc; text-align: center; padding-top: 10px; color: #666; font-weight: bold; margin-top: 20px; }
+        .lecturer { background-color: #D6E4FF; padding: 5px 20px; border: 1px solid #4A90E2; margin-top: 10px; display: inline-block; }
+        .tip { font-size: 12px; color: #888; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h2>좌석 배치도 (수동 이동 가능)</h2>
+
+    <div class="controls">
+        <button onclick="shuffleAndDisplay()">무작위 셔플</button>
+    </div>
+
+    <div class="container" id="seating-area"></div>
+
+    <div class="screen-line">
+        앞쪽 스크린
+        <br>
+        <div class="lecturer">강사</div>
+        <p class="tip">* 이름을 드래그해서 빈 공간이나 다른 사람 자리로 옮길 수 있습니다.</p>
+    </div>
+
+    <script>
+        const names = [
+            "조윤", "권태현", "조은결", "김성호", "한혜경", "유지산",
+            "이춘우", "김민정", "진미경", "최준호", "박지우", "박상우", "이종혁", "심정호",
+            "이서우", "박은빈", "조용민", "김유선", "이태경",
+            "황동건", "원가희", "김선희", "박초롱", "채란",
+            "이상욱", "신혜진", "한은태", "박준하", "이민지"
+        ];
+
+        function shuffleAndDisplay() {
+            const shuffled = [...names].sort(() => Math.random() - 0.5);
+            const area = document.getElementById('seating-area');
+            area.innerHTML = '';
+
+            const groupSizes = [6, 10, 8, 10]; // 그룹별 인원수 설정
+            let currentIndex = 0;
+
+            groupSizes.forEach(size => {
+                const table = document.createElement('table');
+                for (let i = 0; i < size; i += 2) {
+                    const tr = document.createElement('tr');
+                    [0, 1].forEach(offset => {
+                        const td = document.createElement('td');
+                        const name = shuffled[currentIndex + i + offset] || "";
+                        
+                        // 드래그 이벤트 리스너 추가
+                        td.addEventListener('dragover', e => e.preventDefault());
+                        td.addEventListener('dragenter', function() { this.classList.add('drag-over'); });
+                        td.addEventListener('dragleave', function() { this.classList.remove('drag-over'); });
+                        td.addEventListener('drop', handleDrop);
+
+                        if (name) {
+                            const span = createNameTag(name);
+                            td.appendChild(span);
+                        }
+                        tr.appendChild(td);
+                    });
+                    table.appendChild(tr);
+                }
+                area.appendChild(table);
+                currentIndex += size;
+            });
+        }
+
+        // 이름 태그 생성 및 드래그 설정
+        function createNameTag(name) {
+            const span = document.createElement('div');
+            span.className = 'name-tag';
+            span.textContent = name;
+            span.draggable = true;
+            
+            span.addEventListener('dragstart', function(e) {
+                this.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', name);
+                window.draggedElement = this; // 드래그되는 요소 저장
+            });
+
+            span.addEventListener('dragend', function() {
+                this.classList.remove('dragging');
+            });
+
+            return span;
+        }
+
+        // 드롭(놓기) 처리
+        function handleDrop(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            
+            const targetTd = this;
+            const sourceElement = window.draggedElement;
+            const sourceTd = sourceElement.parentElement;
+            
+            if (targetTd === sourceTd) return;
+
+            // 이미 대상 칸에 다른 이름이 있다면 서로 바꿈 (Swap)
+            if (targetTd.firstChild) {
+                const targetElement = targetTd.firstChild;
+                sourceTd.appendChild(targetElement);
+            }
+            
+            targetTd.appendChild(sourceElement);
+        }
+
+        shuffleAndDisplay();
+    </script>
+</body>
+</html>
