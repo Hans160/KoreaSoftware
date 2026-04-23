@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width:100px;
+            height:100px;
+            background-color: red;
+            animation-name: moveleft; /* 내가 정한 이름 */
+            animation-duration: 1s; /* 애니메이션이 2초 동안 실행됨 */
+            animation-iteration-count: infinite; /* 무한 반복 */
+            animation-direction: alternate; /* 왔다갔다 반복 */
+            animation-timing-function: linear; /* 일정한 속도로 이동 */ 
+            position: relative;
+        }
+        @keyframes moveleft {
+            0% {
+                left: 0;
+            }
+            80% {
+                left: 50px;
+            }
+            100% {
+                left: 200px;
+            }
+        }
+
+        .text {
+            color: black;
+            animation-name: fadeOut;
+            animation-duration: 1.5s;
+            animation-delay: 2s; /* 애니메이션이 2초 후에 시작됨 */
+            animation-timing-function: ease-in; /* 점점 빨라지는 효과 */
+            animation-iteration-count: 3; /* 3회 반복 */
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .circle {
+            width:100px;
+            height:100px;
+            background-color: blue;
+            border-radius: 20%;
+            animation-name: rotateAndScale;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+
+        @keyframes rotateAndScale {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.5);
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        .image {
+            width: 300px;
+            height: 200px;
+            animation-name: shake;
+            animation-duration: 1s;
+            animation-timeing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes shake {
+            0%{
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-10px) rotate(-5deg);
+            }
+            75% {
+                transform: translateX(100px) rotate(5deg);
+            }
+            100% {
+                transform: translateX(0);
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <hr>
+    <div class="text">페이드 아웃 글자 효과</div>
+    <hr>
+    <div class="circle"></div>
+    <hr>
+    <img class="image" src="cat.jpg" alt="고양이">
+</body>
+</html>
