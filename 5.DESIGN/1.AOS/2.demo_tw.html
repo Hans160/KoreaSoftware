@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium Scroll Interaction</title>
+  <script src="https://tailwindcss.com"></script>
+  <link href="https://unpkg.com" rel="stylesheet">
+  <style>
+    body { background-color: #020617; } /* 최신 Slate 950 느낌 */
+    .glass-card {
+      background: rgba(30, 41, 59, 0.5);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+<body class="text-slate-100 overflow-x-hidden">
+
+  <!-- 1. HERO (높이: 1000px) -->
+  <section class="h-[1000px] flex flex-col justify-center items-center text-center px-6">
+    <h1 class="text-6xl md:text-8xl font-black mb-8 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-600" data-aos="zoom-out" data-aos-duration="1200">
+      ANIMATION
+    </h1>
+    <p class="text-xl text-slate-400 font-light tracking-wide" data-aos="fade-up" data-aos-delay="400">
+      스크롤을 아래로 내려 다양한 효과를 확인해보세요.
+    </p>
+    <div class="mt-20 animate-bounce text-cyan-500">
+      <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+    </div>
+  </section>
+
+  <!-- 2. STEP BY STEP (이미지 속 그 디자인) -->
+  <section class="min-h-screen py-20 px-6 max-w-4xl mx-auto">
+    <h2 class="text-5xl font-black mb-20 border-l-8 border-cyan-500 pl-6 italic" data-aos="fade-right">
+      Step by Step
+    </h2>
+    
+    <div class="space-y-12">
+      <!-- Item 1 -->
+      <div class="glass-card p-10 rounded-[2rem] shadow-2xl flex items-center group hover:border-cyan-500/50 transition-all duration-500" data-aos="fade-up">
+        <span class="text-5xl mr-8 group-hover:scale-125 transition-transform duration-500">🔥</span>
+        <div>
+          <h3 class="text-2xl font-bold text-cyan-400 mb-2">첫 번째 단계</h3>
+          <p class="text-slate-400 text-lg leading-relaxed">데이터 시각화를 위한 기초 레이아웃 구성</p>
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="glass-card p-10 rounded-[2rem] shadow-2xl flex items-center group hover:border-purple-500/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="200">
+        <span class="text-5xl mr-8 group-hover:scale-125 transition-transform duration-500">💎</span>
+        <div>
+          <h3 class="text-2xl font-bold text-purple-400 mb-2">두 번째 단계</h3>
+          <p class="text-slate-400 text-lg leading-relaxed">고급스러운 스타일링과 컬러 포인트 적용</p>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="glass-card p-10 rounded-[2rem] shadow-2xl flex items-center group hover:border-pink-500/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="400">
+        <span class="text-5xl mr-8 group-hover:scale-125 transition-transform duration-500">⚡</span>
+        <div>
+          <h3 class="text-2xl font-bold text-pink-400 mb-2">세 번째 단계</h3>
+          <p class="text-slate-400 text-lg leading-relaxed">사용자 경험(UX)을 극대화하는 애니메이션</p>
+        </div>
+      </div>
+
+      <!-- Item 4 -->
+      <div class="glass-card p-10 rounded-[2rem] shadow-2xl flex items-center group hover:border-orange-500/50 transition-all duration-500" data-aos="fade-up" data-aos-delay="600">
+        <span class="text-5xl mr-8 group-hover:scale-125 transition-transform duration-500">🌈</span>
+        <div>
+          <h3 class="text-2xl font-bold text-orange-400 mb-2">마지막 단계</h3>
+          <p class="text-slate-400 text-lg leading-relaxed">완벽한 스크롤 인터랙션 완성</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. LONG VISUAL SPACE (스크롤 체감용: 1500px) -->
+  <section class="h-[1500px] flex items-center justify-center relative overflow-hidden">
+    <!-- 배경 장식용 거대 블러 원 -->
+    <div class="absolute w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[120px]" data-aos="zoom-in" data-aos-duration="2000"></div>
+    
+    <div class="text-center z-10">
+        <h2 class="text-4xl md:text-6xl font-bold italic text-slate-700 mb-4" data-aos="fade-up">"더 깊이 내려가 보세요..."</h2>
+        <p class="text-slate-500" data-aos="fade-up" data-aos-delay="300">충분한 스크롤 공간이 디자인의 여유를 만듭니다.</p>
+    </div>
+  </section>
+
+  <!-- 4. FOOTER (높이: 800px) -->
+  <footer class="h-[800px] flex flex-col justify-center items-center text-center px-6 border-t border-slate-800">
+    <div data-aos="flip-down" data-aos-duration="1000">
+        <h2 class="text-6xl md:text-8xl font-black mb-6">FINISH</h2>
+        <p class="text-slate-400 text-xl mb-12 font-light">이제 여러분만의 화려한 웹사이트를 만들어보세요.</p>
+        <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="px-12 py-5 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-full transition-all hover:scale-110 shadow-lg shadow-cyan-500/20 text-xl">
+            맨 위로 가기
+        </button>
+    </div>
+  </footer>
+
+  <!-- AOS JS -->
+  <script src="https://unpkg.com"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: false, // 스크롤 올릴 때 다시 효과 주려면 false
+      mirror: true, // 지나쳐 갔을 때 사라졌다 다시 들어올 때 효과
+      offset: 200
+    });
+  </script>
+</body>
+</html>
