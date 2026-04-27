@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구구단</title>
+</head>
+<body>
+    <h1>구구단 출력기</h1>
+    <input type="text" placeholder="단을 입력하시오 (예: 2)" id="input">
+    <button onclick="printGugudan()">출력하기</button>
+
+    <div id="result">
+        <!-- 결과가 출력될 곳-->
+    </div>
+
+    <script>
+        //js
+        function printGugudan() { 
+            // =============
+            //입력값 가져오기
+            //==============
+            // console.log('버튼 클릭 잘됨');
+            const userInput = document.getElementById('input'); //이건 DOM이 반환
+            const userInputValue = userInput.value; //이건 사용자가 입력한 값
+
+            const userValue = document.getElementById('input').value; //이렇게도 가능   
+            console.log(userInputValue);
+            console.log(userValue);
+
+            const userInputValueNumber = parseInt(userInputValue); //문자열을 숫자로 바꿔주는 함수
+
+
+                //============           
+                // 입력값 검증하기
+                //============
+            if(isNaN(userInputValueNumber) || userInputValueNumber < 1 || userInputValueNumber > 9) {
+                const result = document.getElementById('result');
+                result.innerHTML = '<h3>입력은 1~9숫자만 허용합니다</h3>';
+                return; //함수 종료 
+            }
+
+
+                // =============
+                // 출력값 가져오기
+                // =============
+            const result = document.getElementById('result');
+            console.log(result);
+            //textContent는 태그도 포함해서 가져옴
+            //innerHTML은 태그는 무시하고 텍스트만 가져옴
+            result.innerHTML = '<h3>' + userInputValue + '단</h3>';
+
+            for(let i = 1; i <= 9; i++) {
+                // result.innerHTML += userInputValue + ' x ' + i + ' = ' + userInputValue * i+ '<br>';
+                result.innerHTML += `${userInputValue} x ${i} = ${userInputValue * i}<br>`; //이렇게도 가능
+            }
+        }
+    </script>
+</body>
+</html>
