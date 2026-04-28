@@ -4,77 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-<style>
-    table {
-        /* 이중 선을 방지하고 하나로 합칩니다 */
-        border-collapse: collapse; 
-    }
-
-    td {
-        /* 1픽셀 두께, 실선, 검정색 선을 추가합니다 */
-        border: 1px solid black; 
-        padding: 10px;
-    }
-</style>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
     <table>
         <tr>
-            <td class="Odd">셀 1</td>
-            <td class="Even">셀 2</td>
-            <td class="Odd">셀 3</td>
-        </tr>
-
-        <tr>
-            <td class="Even">셀 4</td>
-            <td class="Odd">셀 5</td>
-            <td class="Even">셀 6</td>
+            <td>셀 1</td>
+            <td>셀 2</td>
+            <td>셀 3</td>
         </tr>
         <tr>
-            <td class="Odd">셀 7</td>
-            <td class="Even">셀 8</td>
-            <td class="Odd">셀 9</td>
+            <td>셀 4</td>
+            <td>셀 5</td>
+            <td>셀 6</td>
+        </tr>
+        <tr>
+            <td>셀 7</td>
+            <td>셀 8</td>
+            <td>셀 9</td>
         </tr>
     </table>
-    
+
     <button onclick="changeOddCells()">홀수셀 색상 변경</button>
     <button onclick="changeEvenCells()">짝수셀 색상 변경</button>
 
-<script>
-    // 색상을 만드는 로직을 별도의 함수로 분리하면 깔끔합니다.
-    function getRandomColor() {
-        const r = Math.floor(Math.random() * 256);
-        const g = Math.floor(Math.random() * 256);
-        const b = Math.floor(Math.random() * 256);
-
-        const rHex = r.toString(16).padStart(2, '0');
-        const gHex = g.toString(16).padStart(2, '0');
-        const bHex = b.toString(16).padStart(2, '0');
-        
-        return '#' + rHex + gHex + bHex;
-    }
-
-    function changeOddCells() {
-        const oddCells = document.getElementsByClassName('Odd');
-        const newColor = getRandomColor(); // 클릭할 때마다 새 색상 생성
-        
-        for (let i = 0; i < oddCells.length; i++) {
-            oddCells[i].style.backgroundColor = newColor;
+    <script>
+        function changeOddCells() {
+            const cells = document.getElementsByTagName('td');
+            // 어?? 우리가 써둔 셀 번호는, 홀수가 짝수 index 셀에 있음.
+            for (let i = 0; i < cells.length; i++) {
+                if (i % 2 == 0) {
+                    // console.log(cells[i]);
+                    cells[i].style.backgroundColor = "lightgreen";
+                }
+            }
         }
-        console.log("홀수셀 변경:", newColor);
-    }
 
-    function changeEvenCells() {
-        const evenCells = document.getElementsByClassName('Even');
-        const newColor = getRandomColor(); // 클릭할 때마다 새 색상 생성
-        
-        for (let i = 0; i < evenCells.length; i++) {
-            evenCells[i].style.backgroundColor = newColor;
+        function changeEvenCells() {
+            const cells = document.getElementsByTagName('td');
+            // cells 가 HTMLCollections 라서 일반 Array로 변환하기: Array.from(리스트타입)
+            Array.from(cells).forEach((cell, index) => {
+                if (index % 2 == 1) {
+                    cell.style.backgroundColor = 'lightblue';
+                    // console.log(index, cell);
+                }
+            });
         }
-        console.log("짝수셀 변경:", newColor);
-    }
-</script>
-
-
+    </script>
 </body>
 </html>

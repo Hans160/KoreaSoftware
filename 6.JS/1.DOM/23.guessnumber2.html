@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>숫자 맞추기 게임</h1>
+    <h2>1~100 까지의 숫자를 맞춰보세요</h2>
+    <input type="number" id="guessNumber" placeholder="숫자를 입력하시오">
+    <button id="guessButton" onclick="guessNumber()">Guess</button>
+    <div id="result"><!--결과가 출력될 곳--></div>
+    <div><ol id="history"><!--입력값 히스토리 출력될 곳 --></ol></div>
+
+    <script>
+        const randomNumber = Math.floor(Math.random() * 100) + 1; //0~99까지 -> 1~100까지...
+        console.log("생성한 숫자: ", randomNumber);
+
+        const result = document.getElementById('result');
+        const guessButton = document.getElementById('result')
+
+        let count = 0;
+
+        function guessNumber() {
+            //로직 구현 - 찍은 숫자가 크면, "숫자가 큽니다. 더 작은 숫자를 입력해주세요."
+            //로직 구현 - 찍은 숫자가 작으면, "숫자가 작아요. 더 큰 숫자를 입력해주세요."
+            //로직 구현 - 정답이 맞으면, "축하합니다. 정답을 맞췄습니다"
+            //사용자가 입력한 모든 히스토리를 아래 보여준다(즉 매 새로운 guess마다 새로운 DOM을 추가한다)
+            //정답을 맞췄을때, 몇번만에 맞췄는지 알려준다. " 축하합니다 정답을 00번만에 맞췄습니다"
+            const guess = document.getElementById("guessNumber").value;
+            const history = document.getElementById("history");
+            
+            count++;
+            if (randomNumber < guess ) {
+                result.textContent = "숫자가 큽니다. 더 작은 숫자를 입력하시오"
+            }else if (randomNumber > guess) {
+                result.textContent = "숫자가 작아요. 더 큰 숫자를 입력하시오."
+            }else {
+                result.textContent = `축하합니다. 정답을 ${count}번만에 맞췄습니다.`;
+            }
+
+            const li = document.createElement("li");
+            li.textContent = `입력값은 ${guess} : ${result.textContent}`
+
+             history.appendChild(li);
+        }
+    </script>
+</body>
+</html>
