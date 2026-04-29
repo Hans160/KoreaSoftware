@@ -19,36 +19,35 @@
     <div id="mydiv">이것은 숨겨진 Div 요소 입니다.</div>
     <script>
         function showhide_withbug() {
-            //문제의 원인은 DOM에는 CSS 내용이 들어가지 않음. 그래서 style로 적용된것을 못 가져옴.
-            const div = document.querySelector('#mydiv')
-            if(div.style.display == 'none'){
+            // 문제의 원인은 DOM에는 CSS 내용이 들어가지 않음. 그래서 sytle로 적용된것을 못 가져옴. (inline만 가져옴)
+            const div = document.querySelector('#mydiv');
+            if (div.style.display == 'none') {
                 div.style.display = 'block';
-            }else {
+            } else {
                 div.style.display = 'none';
-            }    
+            }
         }
 
-        function showhide_bugfix1() {
-            // 적용되는 순서를 바꿔서 해결 
-            const div = document.querySelector('#mydiv')
-            if(div.style.display == 'block'){
+        function showhide2_bugfix1() { // 적용되는 순서를 바꿔서 해결
+            const div = document.querySelector('#mydiv');
+            if (div.style.display == 'block') {
                 div.style.display = 'none';
-            }else {
+            } else {
                 div.style.display = 'block';
-            }    
+            }
         }
 
-        function showhide3_bugfix2() {
-            const div = document.querySelector('#mydiv')
-            const displayStyle = window.getComputedStyle(div).display // 연산된 결과를 가져옴 (CSS가 적용된 현재값)
+        function showhide3_bugfix2() { // 실제 style까지 적용된 결과로 연산
+            const div = document.querySelector('#mydiv');
+            const displayStyle = window.getComputedStyle(div).display; // 연산된 결과를 가져옴 (css가 적용된 현재값)
 
             if (displayStyle == 'none') {
                 div.style.display = 'block';
-
-            }else {
+            } else {
                 div.style.display = 'none';
             }
         }
     </script>
 </body>
 </html>
+ 

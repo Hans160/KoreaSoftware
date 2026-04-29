@@ -6,13 +6,13 @@
     <title>Document</title>
     <style>
         .square {
-            width:100px;
-            height:100px;
+            width: 100px;
+            height: 100px;
             background-color: red;
 
             transition-property: width, height;
             transition-duration: 1.5s;
-            transition-timeing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .square:hover {
@@ -23,18 +23,20 @@
         .button {
             color: black;
             transition-property: color;
-        
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            transition-duration: 1.5s;
         }
+
         .button:hover {
             color: red;
         }
+
         .image {
             width: 300px;
+            height: 200px;
             transition-property: transform;
-            transition-duration: 1s;
-            
+            transition-duration: 1.0s;
         }
+
         .image:hover {
             transform: rotate(180deg);
         }
@@ -43,8 +45,8 @@
 <body>
     <div class="square"></div>
     <br>
-    <button class="button">Hover over me!</button>
+    <button class="button">마우스를 올려보시오</button>
     <br>
-    <img src="cat.jpg" alt="A cute cat" class="image">
+    <img class="image" src="images/cat1.png">
 </body>
 </html>

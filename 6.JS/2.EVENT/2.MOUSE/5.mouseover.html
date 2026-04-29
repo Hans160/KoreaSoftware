@@ -14,19 +14,19 @@
     </style>
 </head>
 <body>
-    <button id="myButton">마우스를 올려보세요</button>
+    <div id="myButton">마우스를 올려보세요.</div>
     <script>
-        document.getElementById('myButton').addEventListener('mouseover', (ev) => {
-            ev.preventDefault(); // 기본 기능을 하지 못하게 함
+        document.getElementById('myButton').addEventListener('mouseover', () => {
             console.log('마우스가 올라갔어요.');
-
         });
 
-        document.getElementById('myButton').addEventListener('mouseout', (ev) => {
-           console.log("마우스가 나갔어요.");
+        document.getElementById('myButton').addEventListener('mouseout', () => {
+            console.log('마우스가 나갔어요.');
         });
 
-        document.getElementById('myButton').addEventListener('')
+        document.getElementById('myButton').addEventListener('mousemove', (ev) => {
+            console.log(`마우스의 정보: ${event.clientX}:${event.clientY}`);
+        });
     </script>
 </body>
 </html>

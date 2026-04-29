@@ -10,33 +10,40 @@
                 width: 100%;
                 border-collapse: collapse;
             }
-            #calendar th {
+
+            #calendar th {  /* #calendar th : calendar 밑에 있는 모든 th */
+                            /* #calendar > th : calendar 바로 밑에 있는 th */
                 width: 14%;
                 padding: 10px;
                 background-color: #dadada;
             }
+
             #calendar td {
                 text-align: center;
                 padding: 10px;
-                border: 1px solid black ;
+                border: 1px solid black;
             }
-            /*#calendar th:first-child, #calendar td:first-child { */
+
+            /* #calendar th:first-child, #calendar td:first-child { */
+            /* calendar id를 가지고 그 아래 어디에 있던지 th 를 찾아서 first-child를 골라라 */
             #calendar tr > *:first-child {
                 color: red;
             }
-            /*#calendar td:last-child, #calendar th:last-child { */
-            #calendar tr > *:last-child {
+
+            #calendar th:last-child, 
+            #calendar td:last-child {
                 color: blue;
             }
+
             img {
                 width: 100%;
             }
         </style>
     </head>
     <body>
-        <H1>포토 캘린더</H1>
-        <H3>2026년 4월</H3>
-        <img src="풍경.jpg" width="50%" alt="노을지는 하늘과 구름" />
+        <h1>포토 캘린더</h1>
+        <h2>2026년 4월</h2>
+        <img src="images/scene1.jpg" alt="야경 바닷가 풍경">
         <table id="calendar">
             <tr>
                 <th>Sun</th>
@@ -55,7 +62,6 @@
                 <td>2</td>
                 <td>3</td>
                 <td>4</td>
-             
             </tr>
             <tr>
                 <td>5</td>
@@ -94,5 +100,5 @@
                 <td></td>
             </tr>
         </table>
+    </body>
 </html>
-                

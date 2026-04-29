@@ -6,55 +6,56 @@
     <title>Document</title>
     <style>
         .box {
-            width:100px;
-            height:100px;
+            width: 100px;
+            height: 100px;
             background-color: red;
-            animation-name: moveleft; /* 내가 정한 이름 */
-            animation-duration: 1s; /* 애니메이션이 2초 동안 실행됨 */
-            animation-iteration-count: infinite; /* 무한 반복 */
-            animation-direction: alternate; /* 왔다갔다 반복 */
-            animation-timing-function: linear; /* 일정한 속도로 이동 */ 
+
+            animation-name: moveLeft; /* 내가 정한 이름 */
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            /* animation-direction: alternate; */
+            animation-timing-function: linear;
             position: relative;
         }
-        @keyframes moveleft {
+
+        @keyframes moveLeft { /* 내가 정한 이름 */
             0% {
                 left: 0;
             }
-            80% {
-                left: 50px;
+            50% {
+                left: 200px;
             }
             100% {
-                left: 200px;
+                left: 0px;
             }
         }
 
         .text {
             color: black;
-            animation-name: fadeOut;
+            animation-name: fadeOut; /* 내가 정한 이름 */
             animation-duration: 1.5s;
-            animation-delay: 2s; /* 애니메이션이 2초 후에 시작됨 */
-            animation-timing-function: ease-in; /* 점점 빨라지는 효과 */
-            animation-iteration-count: 3; /* 3회 반복 */
+            animation-delay: 2s;
+            animation-timing-function: ease-in;
+            animation-iteration-count: 3;
         }
 
-        @keyframes fadeOut {
+        @keyframes fadeOut { /* 내가 정한 이름 */
             0% {
-                opacity: 1;
+                opacity: 1;  /* 불투명 */
             }
             100% {
-                opacity: 0;
+                opacity: 0; /* 투명 */
             }
         }
 
         .circle {
-            width:100px;
-            height:100px;
+            width: 100px;
+            height: 100px;
             background-color: blue;
             border-radius: 20%;
             animation-name: rotateAndScale;
             animation-duration: 3s;
             animation-iteration-count: infinite;
-            animation-direction: alternate;
         }
 
         @keyframes rotateAndScale {
@@ -73,13 +74,13 @@
             width: 300px;
             height: 200px;
             animation-name: shake;
-            animation-duration: 1s;
-            animation-timeing-function: linear;
+            animation-duration: 0.5s;
+            animation-timing-function: linear;
             animation-iteration-count: infinite;
         }
 
         @keyframes shake {
-            0%{
+            0% {
                 transform: translateX(0);
             }
             25% {
@@ -90,17 +91,17 @@
             }
             100% {
                 transform: translateX(0);
+            }
         }
-    }
     </style>
 </head>
 <body>
     <div class="box"></div>
     <hr>
-    <div class="text">페이드 아웃 글자 효과</div>
+    <p class="text">페이드 아웃 글자 효과</p>
     <hr>
     <div class="circle"></div>
     <hr>
-    <img class="image" src="cat.jpg" alt="고양이">
+    <img class="image" src="images/cat1.png">
 </body>
 </html>

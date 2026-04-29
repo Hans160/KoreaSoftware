@@ -7,17 +7,15 @@
     <style>
         #grandparent {
             padding: 50px;
-            background-color: #ff0000;
-            
+            background-color: lightgray;
         }
         #parent {
             padding: 50px;
-            background-color: #00ff00;
-            
+            background-color: lightblue;
         }
         #child {
             padding: 50px;
-            background-color: #0000ff;
+            background-color: lightgreen;
         }
     </style>
 </head>
@@ -31,30 +29,32 @@
             </div>
         </div>
     </div>
-
     <script>
         // 이벤트 버블링: 나의 이벤트가 부모요소에게 전달되는 현상
 
-        // 1. 캡처링 : 이벤트가 부모요소에게 전달되는 현상
-        // 2. 
-        document.addEventListener('DOMContentLoaded', () => {
-            const grandparent = document.querySelector('#grandparent');
-            const parent = document.querySelector('#parent');
-            const child = document.querySelector('#child');
-        
+        // 1. 캡처링: window → document → html → body → outer → inner → target
+        // 2. 타겟: target
+        // 3. 버블링: target → inner → outer → body → html → document → window
 
-        child.addEventListener('click', (ev) => {
-            alert('child 클릭됨');
-            ev.stopPropagation(); // 이벤트 마블링이 일어나지 않도록 중지
+        document.addEventListener('DOMContentLoaded', () => {
+            const child = document.getElementById('child');
+            const parent = document.getElementById('parent');
+            const grandparent = document.getElementById('grandparent');
+            
+            child.addEventListener('click', (ev) => {
+                alert('Child 클릭됨');
+                ev.stopPropagation(); // 이벤트 버블링이 일어나지 않도록 중지
             });
-        parent.addEventListener('click', () => {
-           alert('parent 클릭됨');
+            
+            parent.addEventListener('click', () => {
+                alert('Parent 클릭됨');
             });
-        grandparent.addEventListener('click', () => {
-            alert('grandparent 클릭됨');
+            
+            grandparent.addEventListener('click', () => {
+                alert('GrandParent 클릭됨');
             });
         });
+            
     </script>
-       
 </body>
 </html>

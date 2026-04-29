@@ -8,18 +8,16 @@
 <body>
     <h1 id="text">색상 변경 버튼</h1>
     <button onclick="changeColor()">색상 변경</button>
-
-    <Script>
-        // 버튼을 누를때마다 red -> blue -> green -> red...
-        //배열의 인덱스 라는 특성을 사용하여 버튼이 눌릴때마다 h1의 글자색과 배경색이 바뀌도록 만들어보자
-        const colors = ["red", "blue", "green"] 
+    <script>
+        // 버튼을 누를때마다 red -> blue -> green -> red ...
+        const colors = ["red", "blue", "green", "orange", "yellow"];
         let index = 0;
-        function changeColor() {
-            
-            document.body.style.backgroundColor = colors[index++];
-            index = (index +1) % colors.length;
-            }
 
-    </Script>
+        function changeColor() {
+            // 로직을 구현해서...
+            document.body.style.backgroundColor = colors[index];
+            index = (index + 1) % colors.length;
+        }
+    </script>
 </body>
 </html>

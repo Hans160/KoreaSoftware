@@ -4,48 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        #sizeInfo {
-            font-size: 18px;
-            line-height: 1.6;
-            background-color: blueviolet;
-        }
-    </style>
 </head>
 <body>
-    <h1>당신의 화면 정보는 다음과 같습니다.</h1>
-    <div id="sizeInfo"></div>
     <script>
-        function updateWindowInfo() {
-            const innerWidth = window.innerWidth;
-            const innerHeight = window.innerHeight;
+        window.addEventListener('resize', (ev) => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
 
-            const outerWidth = window.outerWidth;
-            const outerHeight = window.outerHeight;
-
-            const screenWidth = window.screen.width;
-            const screenHeight = window.screen.height;
-
-            const sizeInfo = document.getElementById('sizeInfo');
-            sizeInfo.innerHTML =`
-                <strong>뷰포트</strong>: ${innerWidth}, innerHeight : ${innerHeight}
-                <strong>브라우저 크기</strong> : ${outerWidth}, outerHeight : ${outerHeight}
-                <strong>화면 해상도</strong> : ${screenWidth}, screenHeight : ${screenHeight}
-            `;
-
-            
-        }
-
-        window.addEventListener('load', () => {
-            settimeout(updateWindowInfo, 50);
-        })
-
-        // updateWindowInfo();
-
-        window.addEventListener('resize', () => {
-            updateWindowInfo();
+            console.log(`창 크기가 바꼈음: x=${width}, y=${height}`);
         })
     </script>
-    
 </body>
 </html>

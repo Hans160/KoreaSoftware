@@ -9,9 +9,8 @@
             width: 100%;
             background-color: #dfffb2;
         }
-
         #progress {
-            width: 0%;
+            width: 2px;
             height: 30px;
             background-color: #ffa806;
         }
@@ -19,8 +18,6 @@
             position: absolute;
             width: 100%;
             text-align: center;
-            color: black;
-
         }
     </style>
 </head>
@@ -32,45 +29,43 @@
     <div id="progressBar">
         <div id="progress"><span id="progressText">0%</span></div>
     </div>
-
     <script>
         let interval;
         let timerId;
         const timeInput = document.getElementById('timeInput');
-        const progress = document.getElementById('progress');
+        const progress = document.getElementById('progress'); // 진행율바
         const progressText = document.getElementById('progressText');
         const startButton = document.getElementById('startButton');
 
         function startProgress() {
             duration = parseInt(timeInput.value);
-            console.log('입력초', duration);
+            console.log('입력초: ', duration);
+            startButton.disabled = true;
 
-            let elapsed =0; //초과 시간
-            
+            let elapsed = 0; /* 초과 시간 */
             timerId = setInterval(() => {
-                // console.log('반복호출')
+                // console.log('반복호출');
                 elapsed++;
                 const ratio = Math.floor((elapsed / duration) * 100); // 진행율 계산
-                progress.style.width = `${ratio}%`;
+                progress.style.width = `${ratio}%`;  // ratio + '%'
                 progressText.textContent = `${ratio}%`;
                 console.log(progress);
-                console.log(ratio);
 
                 if (ratio >= 100) {
-                    //타이머 중지
-                    clearInterval(timerId)
-                    console.log("끝났습니다");
-                    startButton.disabled= false;
+                    // 타이머 중지
+                    clearInterval(timerId);
+                    startButton.disabled = false;
                 }
             }, 1000);
         }
 
         function clearProgress() {
-            progress.style.width = '2px';  // 살짝 보이게...
-            timeInput.value="";
+            if (timerId) clearInterval(timerId);
+            progress.style.width = '2px'; // 살짝 보이게...
+            timeInput.value = "";
             progressText.textContent = '0%';
+            startButton.disabled = false;
         }
-       
     </script>
 </body>
 </html>

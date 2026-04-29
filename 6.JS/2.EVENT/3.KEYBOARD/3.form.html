@@ -13,11 +13,12 @@
     </form>
 
     <script>
-        document.getElementById('myTextarea').addEventListener('keydown', (ev) => {
-            if (ev.shiftKey && ev.key === 'Enter') {
-                document.getElementById('myForm').submit(); //폼 제출
+        document.getElementById('myTextarea').addEventListener('keydown', (event) => {
+            if (event.shiftKey && event.key === 'Enter') {
+                // console.log('제출');
+                document.getElementById('myForm').submit();  // 폼 제출
             }
-        });
+        })
     </script>
 </body>
 </html>

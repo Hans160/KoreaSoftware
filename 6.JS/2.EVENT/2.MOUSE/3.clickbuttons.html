@@ -14,27 +14,43 @@
     </style>
 </head>
 <body>
-    <button id="myButton">클릭하시오</button>
+    <div id="myButton">클릭하시오</div>
     <script>
-        // 1. DOM 요소 가져온다. 2. 이벤트 붙인다. 3. 핸들러 구현한다.
-        // document.getElementById('myButton').addEventListener('mousedown', () =>{
-        //     console.log('클릭 OK')
+        // document.getElementById('myButton').addEventListener('mousedown', () => {
+        //     console.log('버튼 눌림');
         // });
         document.getElementById('myButton').addEventListener('mousedown', (event) => {
-            console.log('버튼 눌림 :', event);
+            console.log('버튼 눌림: ', event);
 
             switch(event.button) {
-                case 0: //왼쪽 버튼
+                case 0: // 왼쪽 버튼
                     console.log('왼쪽 버튼 눌림');
                     break;
-                case 1:  //미들 버튼
+                case 1: // 미들 버튼
                     console.log('가운데 버튼 눌림');
                     break;
-                case 2: //우 클릭
+                case 2: // 우클릭
                     console.log('오른쪽 버튼 눌림');
                     break;
                 default:
-                    console.log('뭔지모르는 버튼 눌림: ', event.button)
+                    console.log('뭔지모르는 버튼 눌림: ', event.button);
+            }
+        });
+        document.getElementById('myButton').addEventListener('mouseup', (event) => {
+            console.log('버튼 눌림: ', event);
+
+            switch(event.button) {
+                case 0: // 왼쪽 버튼
+                    console.log('왼쪽 버튼 뗌');
+                    break;
+                case 1: // 미들 버튼
+                    console.log('가운데 버튼 뗌');
+                    break;
+                case 2: // 우클릭
+                    console.log('오른쪽 버튼 뗌');
+                    break;
+                default:
+                    console.log('뭔지모르는 버튼 뗌: ', event.button);
             }
         });
     </script>

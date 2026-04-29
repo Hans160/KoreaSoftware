@@ -8,14 +8,15 @@
 <body>
     <h1>브라우저 정보</h1>
     <p>GPS좌표: <span id="geo"></span></p>
-   <button id="getLocation">위치정보 조회</button>
-   
-   <script>
-       document.getElementById("getLocation").addEventListener("click",function(){
-           navigator.geolocation.getCurrentPosition(function(position){
-               document.getElementById("geo").textContent = `위도 ${position.coords.latitude}, 경도 ${position.coords.longitude}`; //position.coords.latitude + ", " + position.coords.longitude;
-           })
-       })
-   </script>
+    <button id="getLocation">위치 정보 조회</button>
+
+    <script>
+        document.getElementById('getLocation').addEventListener('click', () => {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const { latitude, longitude } = position.coords;
+                document.getElementById('geo').textContent = `위도: ${latitude}, 경도 ${longitude}`;
+            })
+        });
+    </script>
 </body>
 </html>

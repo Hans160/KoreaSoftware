@@ -1,188 +1,188 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bootstrap + AOS Scroll Demo</title>
+<meta charset="UTF-8">
+<title>Bootstrap + AOS Demo</title>
 
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- AOS -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<!-- AOS -->
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
-  <style>
-    body {
-      background: #0b0f19;
-      color: white;
-    }
+<style>
+body {
+    background-color: #111;
+    color: white;
+    scroll-behavior: smooth;
+}
 
-    .hero {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
+/* 카드 스타일 */
+.card-custom {
+    background: #2d2d2d;
+    border-radius: 15px;
+    padding: 30px;
+    transition: all 0.4s;
+}
 
-    .section-dark {
-      padding: 120px 0;
-    }
+.card-custom:hover {
+    transform: scale(1.1);
+}
 
-    .glass-card {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 24px;
-      backdrop-filter: blur(10px);
-    }
+/* 이미지 */
+.img-custom {
+    border-radius: 15px;
+    transition: 0.4s;
+}
 
-    html {
-      scroll-behavior: smooth;
-    }
-  </style>
+.img-custom:hover {
+    transform: scale(1.1);
+}
+
+/* 버튼 */
+.btn-custom {
+    background: #0d6efd;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 50px;
+    transition: 0.4s;
+}
+
+.btn-custom:hover {
+    background: purple;
+    transform: scale(1.1);
+}
+
+/* 섹션 간격 */
+.section {
+    padding: 150px 0;
+}
+</style>
+
 </head>
-
 <body>
 
 <!-- HERO -->
-<section class="hero">
-  <div>
-    <h1 class="display-3 fw-bold" data-aos="fade-up">
-      Bootstrap + AOS Demo
+<section class="vh-100 d-flex flex-column justify-content-center align-items-center text-center">
+    <h1 class="display-3 mb-3" data-aos="fade-down">
+        Scroll Animation Demo
     </h1>
-    <p class="text-secondary mt-3" data-aos="fade-up" data-aos-delay="200">
-      Scroll-based interactive landing page
-    </p>
-
-    <div class="mt-5 text-secondary" data-aos="fade-up" data-aos-delay="400">
-      ↓ scroll down
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 1 -->
-<section class="section-dark">
-  <div class="container">
-    <div class="row align-items-center g-5">
-
-      <div class="col-md-6" data-aos="fade-right">
-        <h2 class="fw-bold mb-3">Smooth Scroll Experience</h2>
-        <p class="text-secondary">
-          Bootstrap grid와 AOS 애니메이션을 결합하면 
-          빠르게 랜딩 페이지를 만들 수 있다.
-        </p>
-      </div>
-
-      <div class="col-md-6" data-aos="zoom-in">
-        <div class="glass-card">
-          <div style="height:200px; background:linear-gradient(45deg,#6f42c1,#0dcaf0); border-radius:15px;"></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 2 CARDS -->
-<section class="section-dark">
-  <div class="container">
-
-    <h2 class="text-center fw-bold mb-5" data-aos="fade-up">
-      Feature Cards
-    </h2>
-
-    <div class="row g-4">
-
-      <div class="col-md-4" data-aos="fade-up">
-        <div class="glass-card text-center">
-          <h4>Fast</h4>
-          <p class="text-secondary">Bootstrap 기반 빠른 개발</p>
-        </div>
-      </div>
-
-      <div class="col-md-4" data-aos="fade-up" data-aos-delay="150">
-        <div class="glass-card text-center">
-          <h4>Simple</h4>
-          <p class="text-secondary">AOS로 간단한 애니메이션</p>
-        </div>
-      </div>
-
-      <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-        <div class="glass-card text-center">
-          <h4>Scalable</h4>
-          <p class="text-secondary">3000px~4000px 확장 가능 구조</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 3 TIMELINE -->
-<section class="section-dark">
-  <div class="container">
-    <div class="row">
-
-      <div class="col-md-8 mx-auto">
-
-        <div class="mb-5" data-aos="fade-left">
-          <h3>Step 1</h3>
-          <p class="text-secondary">스크롤 감지 시작</p>
-        </div>
-
-        <div class="mb-5" data-aos="fade-left" data-aos-delay="150">
-          <h3>Step 2</h3>
-          <p class="text-secondary">AOS 애니메이션 실행</p>
-        </div>
-
-        <div class="mb-5" data-aos="fade-left" data-aos-delay="300">
-          <h3>Step 3</h3>
-          <p class="text-secondary">인터랙션 완성</p>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 4 VISUAL -->
-<section class="section-dark" style="min-height:120vh;">
-  <div class="container text-center">
-
-    <div 
-      class="mx-auto rounded-circle"
-      style="width:220px;height:220px;background:radial-gradient(circle,#ff4ecd,#6f42c1); filter: blur(10px); opacity:0.7;"
-      data-aos="zoom-in"
-    ></div>
-
-    <h2 class="mt-5 fw-bold" data-aos="fade-up">
-      Immersive Section
-    </h2>
-
     <p class="text-secondary" data-aos="fade-up" data-aos-delay="200">
-      스크롤 길이 약 3000px 이상 구성
+        Bootstrap + AOS Version
     </p>
-
-  </div>
 </section>
 
-<!-- FOOTER -->
-<footer class="py-5 text-center text-secondary">
-  <p data-aos="fade-up">End of Scroll Demo</p>
-</footer>
+<!-- SECTION 1 카드 -->
+<section class="section bg-dark">
+    <div class="container">
+        <h2 class="text-center mb-5" data-aos="fade-up">Card Animations</h2>
 
-<!-- AOS + Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card-custom" data-aos="fade-up">Card 1</div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-custom" data-aos="fade-up" data-aos-delay="200">Card 2</div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-custom" data-aos="fade-up" data-aos-delay="400">Card 3</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 2 이미지 -->
+<section class="section">
+    <div class="container text-center">
+        <h2 class="mb-5" data-aos="zoom-in">Image Effects</h2>
+
+        <div class="row justify-content-center g-4">
+            <div class="col-md-3">
+                <img src="https://picsum.photos/300/200"
+                     class="img-fluid img-custom"
+                     data-aos="zoom-in">
+            </div>
+            <div class="col-md-3">
+                <img src="https://picsum.photos/301/200"
+                     class="img-fluid img-custom"
+                     data-aos="flip-left">
+            </div>
+            <div class="col-md-3">
+                <img src="https://picsum.photos/302/200"
+                     class="img-fluid img-custom"
+                     data-aos="flip-right">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 3 슬라이드 -->
+<section class="section bg-dark">
+    <div class="container">
+        <h2 class="text-center mb-5" data-aos="fade-right">Slide Animations</h2>
+
+        <div class="mb-5 card-custom" data-aos="fade-right">
+            Left Slide
+        </div>
+
+        <div class="card-custom text-end" data-aos="fade-left">
+            Right Slide
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 4 텍스트 -->
+<section class="section">
+    <div class="container">
+        <h2 class="text-center mb-5" data-aos="fade-up">Text Reveal</h2>
+
+        <p class="text-secondary fs-5" data-aos="fade-up" data-aos-delay="100">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+        </p>
+
+        <p class="text-secondary fs-5 mt-4" data-aos="fade-up" data-aos-delay="300">
+            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
+        </p>
+    </div>
+</section>
+
+<!-- SECTION 5 Stagger -->
+<section class="section bg-dark">
+    <div class="container text-center">
+        <h2 class="mb-5" data-aos="fade-up">Stagger Effects</h2>
+
+        <div class="row g-3">
+            <div class="col-md-3">
+                <div class="bg-primary p-5 rounded" data-aos="zoom-in" data-aos-delay="0"></div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-primary p-5 rounded" data-aos="zoom-in" data-aos-delay="100"></div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-primary p-5 rounded" data-aos="zoom-in" data-aos-delay="200"></div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-primary p-5 rounded" data-aos="zoom-in" data-aos-delay="300"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section d-flex flex-column align-items-center justify-content-center text-center">
+    <h2 class="mb-4" data-aos="fade-up">Ready to Build Something?</h2>
+
+    <button class="btn-custom" data-aos="zoom-in">
+        Get Started
+    </button>
+</section>
 
 <script>
-  AOS.init({
-    duration: 800,
-    once: false,
-    offset: 120
-  });
+AOS.init({
+    duration: 1000,
+    once: false
+});
 </script>
 
 </body>

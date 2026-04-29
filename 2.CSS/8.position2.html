@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
         .bg {
-           height: 300px;
-           background-color: orange;
+            height: 300px;
+            background-color: orange;
         }
         .center {
             background-color: orangered;
         }
         .fixed {
             width: 100px;
-            height:100px;
-            background-image: url(starbugs.jpg);
+            height: 100px;
+            background-color: white;
+            background-image: url(images/starbucks.png);
             background-size: 100% 100%;
             position: fixed;
             bottom: 50px;
@@ -28,10 +30,10 @@
     <div class="bg"></div>
     <div class="fixed"></div>
     <script>
-        const elem = document.querySelector(".fixed");
+        const elem = document.querySelector('.fixed');
 
         elem.onclick = () => {
-           elem.style.transform = elem.style.transform === 'scale(0.2)' ? 'scale(1)' : 'scale(0.2)';
+            elem.style.transform = elem.style.transform === 'scale(0.2)' ? 'scale(1)' : 'scale(0.2)';
         }
     </script>
 </body>

@@ -8,23 +8,20 @@
 <body>
     <h1 id="text">색상 변경 버튼</h1>
     <button onclick="changeColor()">색상 변경</button>
-
-    <Script>
-        // 버튼이 눌릴때마다 h1의 글자색과 배경색이 빨간색으로 바뀌도록 만들어보자
+    <script>
         function changeColor() {
             // const heading = document.getElementById('text');
             // heading.style.color = 'red';
 
-            // 1. 이거 처음 클릭에서 왜 두번 클릭해야 빨간색이 되는지 살펴보기
-            // 2. F12개발자도구에서 Elements 켜놓고 지켜보면서 디버깅 하기
+            // 1. 이거 처음 클릭에서 왜 두번클릭해야 빨간색이 되는지 살펴보기
+            // 2. F12개발자도구에서 Elements 켜놓고 지켜보면서 디버깅하기
             // 3. 아래 논리 구조를 다양하게 변경하면서 이 문제 해결하기
-            if (document.body.style.backgroundColor == 'red') {
-                document.body.style.backgroundColor = 'white';
-            } else {
+            if (document.body.style.backgroundColor == 'white') {
                 document.body.style.backgroundColor = 'red';
+            } else {
+                document.body.style.backgroundColor = 'white';
             }
         }
-
-    </Script>
+    </script>
 </body>
 </html>

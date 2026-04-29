@@ -15,13 +15,14 @@
 </head>
 <body>
     <input type="text" id="myInput" placeholder="키를 입력하시오">
-    <div id="displayKey"><!--눌린키를 표시할곳 --></div>
+    <div id="displayKey"><!-- 눌린키를 표시할곳 --></div>
+
     <script>
         const displayKey = document.getElementById('displayKey');
 
         document.getElementById('myInput').addEventListener('keydown', (ev) => {
-            // console.log('키가 입력됨', ev.key);
             displayKey.textContent = ev.key;
+            // console.log('키가 입력됨: ', ev.key);
         });
     </script>
 </body>
