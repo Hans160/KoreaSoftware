@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>HangMan</title>
+<style>
+    /* 배경 및 기본 폰트 설정 */
+    body {
+        background-color: #f0f2f5;
+        font-family: 'Pretendard', -apple-system, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    /* 전체 컨테이너 스타일 */
+    .game-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        text-align: center;
+        width: 350px;
+    }
+
+    h1 {
+        color: #4a90e2;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: #555;
+        margin: 10px 0;
+    }
+
+    /* 입력창 스타일 */
+    #guess {
+        padding: 12px;
+        width: 150px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        text-align: center;
+        transition: border-color 0.3s;
+        outline: none;
+    }
+
+    #guess:focus {
+        border-color: #4a90e2;
+    }
+
+    /* 강조 텍스트 색상 */
+    #input { color: #e74c3c; font-weight: bold; } /* 사용한 문자 */
+    #tries { color: #f39c12; font-weight: bold; font-size: 1.2rem; } /* 남은 기회 */
+    #answer { 
+        display: block;
+        font-size: 1.8rem; 
+        letter-spacing: 5px; 
+        color: #2c3e50; 
+        margin-top: 15px;
+        font-family: monospace;
+    }
+
+    /* 버튼 스타일 */
+    button {
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background 0.3s, transform 0.1s;
+    }
+
+    button:hover {
+        background-color: #357abd;
+    }
+
+    button:active {
+        transform: scale(0.98);
+    }
+</style>
+</head>
+
+<body>
+<div class="game-container">
+    <h1>HangMan</h1>
+    <p>게임을 시작합니다.</p>
+    <input type="text" id="guess" maxlength="1" placeholder="문자 입력">
+    
+    <div style="margin-top: 20px;">
+        <p>사용한 문자: [<span id="input"></span>]</p>
+        <p>남은 기회: <span id="tries">10</span></p>
+        <p>정답 확인</p>
+        <span id="answer">_ _ _ _ _</span>
+    </div>
+
+    <button onclick="resetGame()">새 게임</button>
+</div>
+
+    <script>
+    const hangmanWords = [
+        "apple", "banana", "orange", "elephant", "computer",
+        "program", "language", "desktop", "keyboard", "notebook",
+        "rainbow", "dolphin", "diamond", "friends", "kitchen",
+        "mountain", "picture", "science", "sunshine", "weather"
+    ];
+
+    let currentAnswer = "";
+    let hangmanTriesCount = 6;
+    let hangmanInputLetters = [];
+
+    const hangmanInput = document.getElementById("guess");
+    const hangmanInputText = document.getElementById("input");
+    const hangmanTries = document.getElementById("tries");
+    const hangmanAnswerText = document.getElementById("answer");
+
+    // 게임 초기화 함수
+    function resetGame() {
+        // 새로운 단어 선택
+        currentAnswer = hangmanWords[Math.floor(Math.random() * hangmanWords.length)];
+        console.log('currentAnswer', currentAnswer);
+        hangmanTriesCount = 6;
+        hangmanInputLetters = [];
+        
+        // UI 초기화
+        hangmanInput.value = "";
+        hangmanInputText.textContent = "";
+        hangmanTries.textContent = hangmanTriesCount;
+        
+        // 정답판 초기화 (언더바로 표시)
+        renderAnswer();
+    }
+
+    // 화면에 정답 현황을 그리는 함수
+    function renderAnswer() {
+        let display = "";
+        let isWin = true;
+
+        for (let char of currentAnswer) {
+            if (hangmanInputLetters.includes(char)) {
+                display += char + " ";
+            } else {
+                display += "_ ";
+                isWin = false;
+            }
+        }
+        hangmanAnswerText.textContent = display;
+
+        // 승리 조건 체크
+        if (isWin && currentAnswer.length > 0) {
+            setTimeout(() => {
+                alert("축하합니다! 정답을 맞추셨습니다.");
+                resetGame();
+            }, 100);
+        }
+    }
+
+    // 입력 이벤트 처리
+    hangmanInput.addEventListener("input", (e) => {
+        const letter = e.target.value.toLowerCase();
+        
+        // 영문자 확인 및 중복 입력 방지
+        if (letter.match(/[a-z]/) && !hangmanInputLetters.includes(letter)) {
+            hangmanInputLetters.push(letter);
+            hangmanInputText.textContent = hangmanInputLetters.join(", ");
+
+            // 오답일 경우 기회 차감
+            if (!currentAnswer.includes(letter)) {
+                hangmanTriesCount--;
+                hangmanTries.textContent = hangmanTriesCount;
+            }
+
+            renderAnswer();
+
+            // 패배 조건 체크
+            if (hangmanTriesCount <= 0) {
+                setTimeout(() => {
+                    alert(`게임 오버! 정답은 [${currentAnswer}]였습니다.`);
+                    resetGame();
+                }, 100);
+            }
+        }
+        
+        // 입력창 비우기
+        hangmanInput.value = "";
+    });
+
+    // 페이지 로드 시 게임 시작
+    resetGame();
+</script>
+
+</body>
+
+</html>
