@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    /* 기본 배경 설정 */
+    body {
+        background-color: #1a1a1a;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: 'Courier New', Courier, monospace; /* 숫자 간격이 일정한 폰트 */
+    }
+
+    /* 스탑워치 전체 박스 */
+    .stopwatch-box {
+        background-color: #2d2d2d;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        width: 350px;
+    }
+
+    /* 시간 표시 영역 */
+    #display {
+        font-size: 48px;
+        color: #00ff88; /* 네온그린 포인트 */
+        margin-bottom: 30px;
+        font-weight: bold;
+        text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        background: #1a1a1a;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    /* 버튼 컨테이너 */
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    /* 공통 버튼 스타일 */
+    button {
+        flex: 1;
+        padding: 12px 0;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: white;
+    }
+
+    /* 시작 버튼 (Green) */
+    #start {
+        background-color: #28a745;
+    }
+    #start:hover {
+        background-color: #218838;
+        transform: scale(1.05);
+    }
+
+    /* 중지 버튼 (Red) */
+    #stop {
+        background-color: #dc3545;
+    }
+    #stop:hover {
+        background-color: #c82333;
+        transform: scale(1.05);
+    }
+
+    /* 초기화 버튼 (Gray) */
+    #reset {
+        background-color: #6c757d;
+    }
+    #reset:hover {
+        background-color: #5a6268;
+        transform: scale(1.05);
+    }
+
+    /* 버튼 클릭 시 눌리는 효과 */
+    button:active {
+        transform: scale(0.95);
+    }
+</style>
+
+</head>
+<body>
+    <!-- 스탑워치 전체 -->
+    <div class="stopwatch-box">
+        <!--스탑워치 표시 영역-->
+        <div id="display">00:00:00</div>
+        <!-- 스탑워치 버튼 컨테이너-->
+        <div class="button-container">
+            <button id="start">START</button>
+            <button id="stop">STOP</button>
+            <button id="reset">RESET</button>
+        </div>
+
+        <script>
+            // 1.Start 버트에 이벤트를 추가해서 00:00:00 있는 영역을 가져와서... 시간 계산을 해서... setInterval(10ms)마다 업데이트한다
+            // 2.Stop 버튼에 이벤트를 추가해서 ㅏ이머를 클리어한다.
+            // 3.Reset버튼에 이벤트를 추가해서 00:00:00으로 쓴다
+            // 4.UX개선 (디자인,버튼 활성/비활성화)
+            const display = document.getElementById('display');
+            const start = document.getElementById('start');
+            const stop = document.getElementById('stop');
+            const reset = document.getElementById('reset');
+
+            let hours = 0;
+            let minutes = 0;
+            let seconds = 0;
+
+            let interval;
+
+            function updateDisplay() {
+                display.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+
+            function startTimer() {
+                interval = setInterval(() => {
+                    seconds++;
+                    if (seconds === 60) {
+                        seconds = 0;
+                        minutes++;
+                    }
+                    if (minutes === 60) {
+                        minutes = 0;
+                        hours++;
+                    }
+                    updateDisplay();
+                }, 10);
+            }
+
+            start.addEventListener('click', startTimer);
+                stop.addEventListener('click', () => {
+                clearInterval(interval);
+            });
+
+            
+            reset.addEventListener('click', () => {
+                clearInterval(interval);
+                hours = 0;
+                minutes = 0;
+                seconds = 0;
+                updateDisplay();
+            });
+        </script>
+    </div>
+</body>
+</html>

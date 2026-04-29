@@ -1,0 +1,45 @@
+<script>
+    // 엘리먼트 참조
+    const img1 = document.getElementById('img1');
+    const img2 = document.getElementById('img2');
+    const img3 = document.getElementById('img3');
+    const imgs = [img1, img2, img3]; // 이미지들을 배열로 관리
+
+    const filename = document.getElementById('filename');
+    const prevBtn = document.getElementById('prevButton');
+    const nextBtn = document.getElementById('nextButton');
+
+    let currentIndex = 0; // 현재 보고 있는 이미지의 번호 (0부터 시작)
+
+    // 화면을 업데이트하는 함수
+    function showImage(index) {
+        // 1. 모든 이미지에서 active 클래스 제거 (일단 다 숨기기)
+        imgs.forEach(img => img.classList.remove('active'));
+
+        // 2. 선택된 인덱스의 이미지에만 active 클래스 추가 (보여주기)
+        imgs[index].classList.add('active');
+
+        // 3. 파일 이름 표시 업데이트
+        filename.textContent = imgs[index].src.split('/').pop(); 
+        // 전체 경로 대신 파일명만 깔끔하게 보려면 위와 같이 쓰고, 
+        // 원래 전체 경로를 다 보여주려면 imgs[index].getAttribute('src')를 사용하세요.
+    }
+
+    // 다음 버튼 클릭 시
+    nextBtn.addEventListener('click', () => {
+        currentIndex++; 
+        if (currentIndex >= imgs.length) {
+            currentIndex = 0; // 마지막이면 다시 첫 번째로
+        }
+        showImage(currentIndex);
+    });
+
+    // 이전 버튼 클릭 시
+    prevBtn.addEventListener('click', () => {
+        currentIndex--;
+        if (currentIndex < 0) {
+            currentIndex = imgs.length - 1; // 첫 번째면 다시 마지막으로
+        }
+        showImage(currentIndex);
+    });
+</script>
