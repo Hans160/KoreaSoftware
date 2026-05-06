@@ -1,94 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        body {
-            text-align: center;
-        }
-
-        ul {
-            list-style-position: inside;
-            /* 점을 텍스트 바로 옆으로 이동 */
-            padding: 0;
-            text-align: center;
-            /* 부모인 ul에서 중앙 정렬 */
-        }
-
-        li {
-            cursor: pointer;
-            /* 마우스를 올렸을 때 손가락 모양으로 변경 */
-            list-style: none;
-            padding: 5px;
-            transition: color 0.3s;
-        }
-
-        /* 클릭했을 때 적용될 클래스 */
-        .completed {
-            text-decoration: line-through;
-            color: #888;
-            /* 글자색을 흐리게 하면 더 효과적이에요 */
-        }
-
-        .del-btn { margin-left: 10px; cursor: pointer; }
-    </style>
-
 </head>
-
 <body>
-    <h1>오늘 할일(ToDo 리스트)</h1>
+    <h1>오늘 할일 (Todo 리스트)</h1>
     <input type="text" id="new-todo" placeholder="할일 입력">
-    <button id="add-todo" onclick="addTodo()">추가</button>
-    <ul id="todo-list"><!-- 할일들이 표시 될 곳 --></ul>
+    <button id="add-todo">추가</button>
+    <ul id="todo-list"><!-- 할일들이 표시될곳--></ul>
     <script>
-        const todoInput = document.getElementById('new-todo');
-        const todoList = document.getElementById('todo-list');
+        // 1. 버튼이 클릭되면...
+        // 2. 거기 값 읽어와서.. ul아래 li 추가하기...
+        document.getElementById('add-todo').addEventListener('click', () => {
+            const newTodo = document.getElementById('new-todo').value;
 
-        function addTodo() {
-            const text = todoInput.value.trim();
-            if (text === '') return;
+            if (newTodo.trim() == '') return; // 입력값의 앞뒤 공백 제거 및 입력값이 빈칸이면 종료
 
-            // 1. li 생성
-            const todoItem = document.createElement('li');
-            
-            // 2. 글자 부분을 담을 span (밑줄 효과용)
-            const todoText = document.createElement('span');
-            todoText.textContent = text;
-            
-            // 3. 삭제 버튼 생성
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'X';
-            deleteBtn.className = 'del-btn';
+            const new_li = document.createElement('li');
+            new_li.textContent = newTodo;
 
-            // 4. 삭제 버튼 클릭 이벤트
-            deleteBtn.onclick = function () {
-                todoItem.remove();
-            };
+            const todoList = document.getElementById('todo-list');
+            todoList.appendChild(new_li);
 
-            // 5. 조립 후 추가
-            todoItem.appendChild(todoText);
-            todoItem.appendChild(deleteBtn);
-            todoList.appendChild(todoItem);
-
-            // 6. 입력창 비우기
-            todoInput.value = '';
-        }
-
-        // 완료 토글 (글자 클릭 시)
-        todoList.addEventListener('click', function (e) {
-            // span(글자)을 클릭했을 때만 밑줄이 생기도록 설정
-            if (e.target.tagName === 'SPAN') {
-                e.target.classList.toggle('completed');
-            }
+            // 입력창 클리어 하기
+            document.getElementById('new-todo').value = '';
         });
 
-        //기능 개선 : 엔터를 통한 버튼 클릭하기 추가
-     document.getElementById('add-todo').addEventListener('click', addTodo);
+        // 기능개선: 엔터를 통한 버튼 클릭하기 추가
+        document.getElementById('new-todo').addEventListener('keydown', (ev) => {
+            if (ev.key === 'Enter') {
+                document.getElementById('add-todo').click(); // 버튼을 클릭한 액션을 대신 수행
+            }
+        });
     </script>
-
 </body>
-
 </html>

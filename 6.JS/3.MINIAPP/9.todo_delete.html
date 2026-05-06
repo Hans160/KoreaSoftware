@@ -27,16 +27,16 @@
             if (newTodo.trim() == '') return; // 입력값의 앞뒤 공백 제거 및 입력값이 빈칸이면 종료
 
             const new_li = document.createElement('li');
-            new_li.textContent = newTodo;
+            new_li.innerHTML = `${newTodo} <button class="deleteBtn">삭제</button>`;
 
             // 클링 이벤트를 나의 li 에도 걸기
             new_li.addEventListener('click', () => {
-                // if (new_li.classList.contains('done')) {
-                    // new_li.classList.remove('done');
-                // } else {
-                    // new_li.classList.add('done');
-                // }
                 new_li.classList.toggle('done');
+            })
+
+            const deleteBtn = new_li.querySelector('.deleteBtn');
+            deleteBtn.addEventListener('click', () => {
+                new_li.remove();
             })
 
             const todoList = document.getElementById('todo-list');
