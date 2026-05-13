@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>홈 화면</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        .section { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 5px; max-width: 500px; }
+        h2 { margin-top: 0; }
+        input[type="text"], input[type="number"] { padding: 8px; width: 200px; margin-right: 10px; }
+        button { padding: 8px 15px; cursor: pointer; }
+        .nav-links a { display: inline-block; margin-right: 15px; font-weight: bold; color: blue; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <h1>나의 쇼핑몰</h1>
+    
+    <div class="nav-links">
+        <a href="/user">모든 사용자 보기</a>
+        <a href="/product">모든 상품 보기</a>
+    </div>
+    
+    <hr>
+
+    <!-- 상품 ID 검색 폼 -->
+    <div class="section">
+        <h2>상품 ID로 검색</h2>
+        <form action="/product" method="get">
+            <input type="number" name="id" placeholder="예: 101" required>
+            <button type="submit">검색</button>
+        </form>
+    </div>
+
+    <!-- 상품 이름 검색 폼 -->
+    <div class="section">
+        <h2>상품 이름으로 검색</h2>
+        <form action="/product" method="get">
+            <input type="text" name="name" placeholder="예: Laptop" required>
+            <button type="submit">검색</button>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -8,6 +8,10 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+
+def allowed_file(filename):
+    ALLOWED_ext = ['png', 'jpg', 'jpeg', 'gif']
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_ext
 @app.route('/')
 def index():
     return render_template('login.html')
