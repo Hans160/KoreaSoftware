@@ -5,7 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    img {
+        width: 300px;
+        height: auto;
+        margin-top: 20px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+    }
+
+</style>
 <body>
-    <!-- 1.버튼을 누르면-->
+    <!-- 1.버튼을 클릭하면, 이미지를 화면에 출력한다.-->
+    <!-- 2. 이미지는 https://dog.ceo/api/breeds/image/random API를 사용하여 가져온다. -->
+    <button id="loadImageBtn">이미지 로드</button>
+    <div id="imageContainer"></div>
+
+    <script>
+        document.getElementById('loadImageBtn').addEventListener('click', () => {
+            fetch('https://dog.ceo/api/breeds/image/random')
+                .then(response => 
+                    response.json())
+                .then(data => {
+                    if (data.status == "success") {
+                        console.log('이미지 URL: ', data.message);
+                    } else {
+                        console.error('API 요청 실패: ', data);
+                        return;
+                    }
+                    const img = document.createElement('img');
+                    img.src = data.message;
+                    document.getElementById('imageContainer').appendChild(img);
+                })
+                .catch(error => {
+                    console.error('이미지 로드 중 오류 발생:', error);
+                });
+        });
+    </script>
 </body>
 </html>

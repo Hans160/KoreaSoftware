@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="prompt" placeholder="질문을 입력하세요">
+    <button id="sendBtn">질문하기</button>
+    <div id="result"><!--응답이 출력될 곳--></div>
+    
+    <script>
+        document.getElementById('sendBtn').addEventListener('click',  () => {
+            fetch("https://api.openai.com/v1/models",
+            {   headers: {
+                "Authorization": "Bearer 여기에 키를 입력하시오"
+            }
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data);
+                document.getElementById('result').innerHTML = `
+                ${JSON.stringify(data)}
+                `;
+            });
+        });
+    </script>
+</body>
+</html>
