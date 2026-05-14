@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>외부 요청 테스트</h1>
+    <input type="number" id="uid">
+    <button id="loadBtn">데이터 요청</button>
+    <button id="saveBtn">데이터 저장</button>
+    <button id="delBtn">데이터 삭제</button>
+    <button id="modBtn">데이터 수정</button>
+    <div id="result"><!--데이터가 출력될 곳--></div>"
+    <script>
+    /* PUT정보 요청 */    
+    document.getElementById('modBtn').addEventListener('click', () => {
+        const userid = document.getElementById('uid').value;
+        const putData = {
+            id: userid,
+            title: 'hello',
+            body: 'world',
+            userId: '1'
+        };
+
+        fetch(`https://jsonplaceholder.typicode.com/posts/${userid}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8' // 서버에 JSON 형식의 데이터를 보낸다는 것을 명시
+            },
+            body: JSON.stringify(putData) // 객체를 JSON 문자열로 변환하여 전송
+        })
+        .then((resp) => resp.json())
+        .then((data) => { console.log('서버로부터 응답받은 데이터: ', data);
+            
+        })
+          
+           
+        });
+    /* Delete정보 요청 */
+    document.getElementById('delBtn').addEventListener('click', () => {
+        const userid = document.getElementById('uid').value;
+        
+        fetch(`https://jsonplaceholder.typicode.com/posts/${userid}`, {
+            method: 'DELETE'
+        })
+    });
+    /* POST 정보 요청 */ 
+    document.getElementById('saveBtn').addEventListener('click', () => {
+        const postData = {
+            title: 'hello',
+            body: 'world',
+            userId: '1'
+        };
+
+        fetch('https://jsonplaceholder.typicode.com/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8' // 서버에 JSON 형식의 데이터를 보낸다는 것을 명시
+            },
+            body: JSON.stringify(postData) // 객체를 JSON 문자열로 변환하여 전송
+        })
+        .then((resp) => resp.json())
+        .then((data) => { console.log('서버로부터 응답받은 데이터: ', data);
+            
+        })
+          
+           
+        });
+
+
+     /* GET 정보 요청 */   
+    document.getElementById('loadBtn').addEventListener('click', () => {
+    const userid = document.getElementById('uid').value;
+    
+    // 1. 데이터 요청
+    fetch(`https://jsonplaceholder.typicode.com/users/${userid}`)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('네트워크 응답에 문제가 있습니다.');
+            }
+            return response.json(); // 다음 then으로 데이터를 넘김
+        })
+        .then((data) => {
+            // 2. 넘겨받은 데이터로 화면 그리기
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+            <ul>
+                <li>사용자ID : ${data.id}</li>
+                <ul>
+                    <li>사용자 이름 : ${data.name}</li>
+                    <li>전화번호 : ${data.phone}</li>
+                    <li>웹사이트 : ${data.website}</li>
+                </ul>
+            </ul>`;
+        })
+        .catch((error) => {    
+            // 3. fetch, json 변환, 화면 그리기 중 발생하는 모든 에러를 여기서 잡음
+            console.log("요청 또는 데이터 처리 과정 중 오류 발생: ", error);
+        });
+});
+
+
+    </script>
+</body>
+</html>
