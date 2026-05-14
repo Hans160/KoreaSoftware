@@ -6,18 +6,14 @@ app = Flask(__name__)
 def index():
     return render_template('form.html')
 
-@app.route('/login', methods=['POST'])  
+@app.route('/login', methods=['POST'])
 def login():
-    id = request.form.get['id']
-    pw = request.form.get['pw']
-    print(f"입력한 ID는 {id}, 비밀번호는 {pw}입니다.")
+    id = request.form.get('id')
+    pw = request.form.get('pw')
+    print(f"입력한 ID는 {id}, PW는 {pw}")
+    # if id == u['id'] and pw == u['pw']:
 
     return render_template('login.html', name=id)
 
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    file = request.files['photo']
-    print(file)
-    return '파일 잘 받았음'
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True)

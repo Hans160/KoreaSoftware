@@ -7,8 +7,8 @@
 </head>
 <body>
     <h1>User 검색</h1>
-    <form>
-        <label>사용자ID: <input type="number">검색</label>
+    <form id="search">
+        <label>사용자ID: <input type="number" id="id"></label>
         <button type="submit">검색</button>
 
         <ul id="userlist"></ul>
@@ -19,10 +19,10 @@
             ev.preventDefault();
 
             const id = document.getElementById('id').value;
-            fetch('/api/users/${id}').then((resp) => {
-                
-            })
+            fetch(`/api/user/${id}`)
+                .then((resp) => resp.json())
+                .then((data) => console.log(data));
+        });
     </script>
-    
 </body>
 </html>

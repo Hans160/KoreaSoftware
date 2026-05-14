@@ -1,47 +1,29 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>상품 조회 결과</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        table { border-collapse: collapse; width: 100%; max-width: 600px; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .no-result { color: #666; font-style: italic; margin-top: 20px; }
-        .back-link { display: inline-block; margin-top: 20px; text-decoration: none; color: blue; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
+    <h1>상품 조회</h1>
 
-    <h1>상품 조회 정보</h1>
+    <form>
+        <label>상품코드: <input type="number" name="id" value="{{ request.args.get('id', '') }}"></label>
+        <label>상품명: <input type="name" name="name" value="{{ request.args.get('name', '') }}"></label>
+        <button type="submit">검색</button>
+    </form>
 
-    <!-- 상품 데이터가 존재하는 경우 -->
-    {% if products %}
-        <table>
-            <thead>
-                <tr>
-                    <th>상품 ID</th>
-                    <th>상품명</th>
-                    <th>가격 ($)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for key, val in products.items() %}
-                <tr>
-                    <td>{{ val.id }}</td>
-                    <td>{{ val.name }}</td>
-                    <td>{{ val.price }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    {% if results %}
+        <ul>
+        {% for p in results %}
+            <li>상품코드: <a href="/product?id={{ p.id }}">{{ p.id }},</a> 상품명: {{ p.name }}, 상품가격: {{ p.price }}</li>
+        {% endfor %}
+        </ul>
     {% else %}
-        <!-- 검색 결과가 비어있는 경우 -->
-        <p class="no-result">일치하는 상품 정보가 존재하지 않습니다.</p>
+        <ul>
+            <li>조건에 맞는 상품은 없습니다.</li>
+        </ul>
     {% endif %}
-
-    <a href="/" class="back-link">← 홈으로 돌아가기</a>
-
 </body>
 </html>

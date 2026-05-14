@@ -22,54 +22,30 @@ products = {
     103: {"id": 103, "name": "Mouse", "price": 40},
     104: {"id": 104, "name": "Monitor", "price": 300},
     105: {"id": 105, "name": "Headset", "price": 150},
+    106: {"id": 106, "name": "Laptop", "price": 1500},
 }
 
-# 메인 홈 화면 (index.html 연동)
 @app.route("/")
 def home():
     return render_template("index.html")
 
-# 1. 사용자 조회 라우트 (templates/user.html 연동)
 @app.route('/user')
 @app.route('/user/<int:user_id>')
 def user(user_id=None):
-    if user_id is None:
-        # /user 요청 시 전체 사용자 딕셔너리 전달
-        return render_template("user.html", users=users, user=None)
-    
-    # /user/<user_id> 요청 시 특정 사용자 데이터만 전달
-    selected_user = users.get(user_id)
-    return render_template("user.html", users=None, user=selected_user)
+    return render_template("user.html", user_id=user_id, users=users)
 
-# 2. 상품 조회 라우트 (templates/product.html 연동)
 @app.route('/product')
 def product():
-    product_id = request.args.get('id')
-    product_name = request.args.get('name')
+    id = request.args.get('id', type=int)
+    name = request.args.get("name", type=str)
 
-    # id 검색 (?id=101)
-    if product_id:
-        try:
-            target_id = int(product_id)
-            prod_data = products.get(target_id)
-            # 검색 결과를 딕셔너리 형태로 감싸서 전달
-            filtered_products = {target_id: prod_data} if prod_data else {}
-            return render_template("product.html", products=filtered_products)
-        except ValueError:
-            return render_template("product.html", products={})
+    found = list(products.values())
+    if id:
+        found = [p    for p in found    if p["id"] == id]
+    if name:
+        found = [p    for p in found    if p["name"].lower() == name.lower()]
 
-    # name 검색 (?name=Laptop)
-    if product_name:
-        filtered_products = {
-            k: v for k, v in products.items() 
-            if product_name.lower() in v['name'].lower()
-        }
-        return render_template("product.html", products=filtered_products)
-
-    # 파라미터가 없으면 모든 상품 전달
-    return render_template("product.html", products=products)
+    return render_template("product.html", results=found)
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-

@@ -4,7 +4,7 @@ from flask import request
 
 app = Flask(__name__)
 
-@app.route('/search/')
+@app.route('/search')
 def search():
     query = request.args.get('q')
     page = request.args.get('page', default=1, type=int)
@@ -17,7 +17,7 @@ def search():
 def show_user_posts(username):
     page = request.args.get('page', default=1, type=int)
     result = f'User is {username} and page is {page}'
-    return jsonify({"message":result})
+    return jsonify({"message": result})
 
 if __name__ == '__main__':
-    app.run(debug=True, port = 5000)
+    app.run(debug=True)
