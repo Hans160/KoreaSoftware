@@ -1,19 +1,23 @@
 # pip install python-dotenv
+
 import os
 import requests
 from dotenv import load_dotenv
 
+# .env 로드
+load_dotenv()
 
-load_dotenv() # .env 파일을 읽어서 해당 key/value를 메모리(환경변수)에 올려둠
+API_KEY = os.getenv("YOUTUBE_API_KEY")
 
-API_KEY = os.getenv('YOUTUBE_API_KEY')
-
+# API URL
 search_url = 'https://www.googleapis.com/youtube/v3/search'
-main_video_url = 'https://www.googleapis.com/youtube/v3/videos'
+video_api_url = 'https://www.googleapis.com/youtube/v3/videos'
 
-search_query = '파이썬 튜토리얼' \
+# 검색어
+search_query = "파이썬 튜토리얼"
 
-params = {
+# Search API 요청 파라미터
+search_params = {
     'part': 'snippet',
     'q': search_query,
     'type': 'video',
@@ -21,53 +25,62 @@ params = {
     'key': API_KEY
 }
 
-response = requests.get(search_url, params=params)
+# 검색 요청
+response = requests.get(search_url, params=search_params)
+
+# JSON 변환
 data = response.json()
 
+# 검색 결과 저장
+search_results = data['items']
 
-search_results = []
+# 최종 결과 저장용
+table = []
 
-for item in data['items']:
-    title = item['snippet']['title']
-    video_id = item['id']['videoId']
-    video_url = f'https://www.youtube.com/watch?v={video_id}'
-    description = item['snippet']['description']
+# 테이블 헤더
+table_header = ['index', 'title', 'view count', 'video url']
 
-    search_results.extend(data['items'])
-
-    print(f'제목: {title}, URL: {video_url}, 설명: {description}')
-    print('--'*40)
-
-# 최종결과물
-table =[]
-
-#가져오고 싶은 추가 정보
-table_headers = ['index', 'title', 'view count', 'video url']
+# 각 영상 상세 조회
 for index, result in enumerate(search_results, start=1):
-    title = result['snippet']['title']
-    video_id = result['id']['videoId']
-    video_url = f'https://www.youtube.com/watch?v={video_id}'
 
-    # 공식 문서를 보고 어떤 파라미터를 넣어야 내가 원하는 통계(조회수) 가 나오는지 찾아보기
+    # 제목
+    title = result['snippet']['title']
+
+    # 비디오 ID
+    video_id = result['id']['videoId']
+
+    # 실제 유튜브 URL
+    youtube_watch_url = f'https://www.youtube.com/watch?v={video_id}'
+
+    # videos API 요청 파라미터
     video_params = {
         'part': 'statistics',
         'id': video_id,
         'key': API_KEY
     }
 
-    video_response = requests.get(main_video_url, params=video_params)
+    # videos API 호출
+    video_response = requests.get(
+        video_api_url,
+        params=video_params
+    )
+
+    print(video_response)
+
+    # JSON 데이터 변환
     video_data = video_response.json()
 
+    # 조회수 추출
     if 'items' in video_data and video_data['items']:
         view_count = video_data['items'][0]['statistics']['viewCount']
     else:
-        view_count = '조회수 정보 없음'
+        view_count = 'N/A'
 
-    table.append({
-        'index': index,
-        'title': title,
-        'view count': view_count,
-        'video url': video_url
-    })
+    # 테이블 저장
+    table.append([index, title, view_count, youtube_watch_url])
 
-print(table)    
+# 출력
+print(table_header)
+
+for row in table:
+    print(row)
