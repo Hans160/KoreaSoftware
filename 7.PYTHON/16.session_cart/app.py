@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request
 from flask import redirect, url_for
 from flask import session
+from datetime import timedelta
 
 app = Flask(__name__)
 app.secret_key = 'my-random-key'
+app.config['permanent_session_lifetime'] = timedelta(minutes=5) # 세션의 유효기간을 1일로 설정 (초 단위)    
 
 # Session 은 더이상 안함 -> 나중엔 이게 DB 에서 대체함
 
