@@ -43,8 +43,9 @@ def view_cart():
         item = next((i for i in items if i['id'] == item_id), None)
         cart_items[item_id] = {
             'name': item['name'],
+            'quantity': quantity,
             'price': item['price'],
-            'quantity': quantity
+            
         }
         total_price += item['price'] * quantity
     
