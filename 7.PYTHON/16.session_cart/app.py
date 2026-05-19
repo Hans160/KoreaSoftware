@@ -32,7 +32,7 @@ def add_to_cart(item_id):
         # 장바구니에 담을 상품이 실제로 존재하는가??
         session['cart'][item_id] = 1
 
-    # session.modified = True # 세션이 변경되었음을 Flask에게 알려줍니다. (세션이 딕셔너리 형태로 저장되어 있기 때문에, 내부적으로 변경이 감지되지 않을 수 있습니다.)
+    session.modified = True # 세션이 변경되었음을 Flask에게 알려줍니다. (세션이 딕셔너리 형태로 저장되어 있기 때문에, 내부적으로 변경이 감지되지 않을 수 있습니다.)
     return redirect(url_for('index'))
 
 @app.route('/cart')
