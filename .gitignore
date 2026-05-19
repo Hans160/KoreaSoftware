@@ -3,3 +3,8 @@
 .env.local
 
 .sessions
+
+# database
+.db
+.sqlite
+.sqlite3
