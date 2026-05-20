@@ -1,0 +1,78 @@
+
+from flask import Flask, send_from_directory, jsonify, request
+from database import MyDatabase
+
+app = Flask(__name__)
+db = MyDatabase()
+
+@app.route('/')
+def index():
+    return send_from_directory('static', 'index.html')
+
+# 1. 게시글 생성 (Create)
+@app.route('/create', methods=['POST'])
+def create():
+    data = request.get_json() or {}
+    title = data.get('title')
+    message = data.get('message')
+
+    if not title or not message:
+        return jsonify({'result': 'fail', 'message': '제목과 내용을 모두 입력해주세요.'}), 400
+
+    sql = "INSERT INTO board (title, message) VALUES (?, ?)"
+    db.execute(sql, (title, message))
+    
+    return jsonify({'result': 'success', 'message': '글이 등록되었습니다.'})
+
+# 2. 게시글 목록 전체 조회 (Read)
+@app.route('/list')
+def list():
+    sql = "SELECT id, title, message FROM board ORDER BY id DESC"
+    # ⭕ 정의하신 execute_fetch 기능을 사용하여 DB 조회
+    rows = db.execute_fetch(sql)
+    
+    # row_factory = sqlite3.Row 덕분에 row['컬럼명'] 형태로 안전하게 꺼내 가공합니다.
+    board_list = []
+    if rows:
+        for row in rows:
+            board_list.append({
+                'id': row['id'],
+                'title': row['title'],
+                'message': row['message']
+            })
+    
+    return jsonify({'result': 'success', 'data': board_list})
+
+# 3. 게시글 삭제 (Delete)
+@app.route('/delete', methods=['POST'])
+def delete():
+    data = request.get_json() or {}
+    board_id = data.get('id')
+
+    if not board_id:
+        return jsonify({'result': 'fail', 'message': '삭제할 게시글 ID가 없습니다.'}), 400
+
+    sql = "DELETE FROM board WHERE id = ?"
+    db.execute(sql, (board_id,))
+    
+    return jsonify({'result': 'success', 'message': '글이 삭제되었습니다.'})
+
+# 4. 게시글 수정 (Update)
+@app.route('/modify', methods=['POST'])
+def modify():
+    data = request.get_json() or {}
+    board_id = data.get('id')
+    new_title = data.get('title')
+    new_message = data.get('message')
+
+    if not board_id or not new_title or not new_message:
+        return jsonify({'result': 'fail', 'message': '필수 데이터가 부족합니다.'}), 400
+
+    sql = "UPDATE board SET title = ?, message = ? WHERE id = ?"
+    db.execute(sql, (new_title, new_message, board_id))
+    
+    return jsonify({'result': 'success', 'message': '글이 수정되었습니다.'})
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)

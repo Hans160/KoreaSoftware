@@ -1,0 +1,90 @@
+// 1. 화면 로딩 완료 시 목록 가져오기
+document.addEventListener("DOMContentLoaded", function() {
+    loadMemoList();
+    
+    // 저장 버튼 클릭 이벤트 리스너 등록
+    document.getElementById('save-btn').addEventListener('click', createMemo);
+});
+
+// 2. [조회] 메모 목록 조회 및 화면 렌더링
+function loadMemoList() {
+    fetch('/list')
+        .then(response => response.json())
+        .then(data => {
+            const cardList = document.getElementById('card-list');
+            cardList.innerHTML = ''; 
+
+            if (data.result === 'success' && data.data.length > 0) {
+                data.data.forEach(memo => {
+                    const card = document.createElement('div');
+                    card.className = 'memo-card';
+                    card.innerHTML = `
+                        <h3>${memo.title}</h3>
+                        <p>${memo.message}</p>
+                        <button class="delete-btn" onclick="deleteMemo(${memo.id})">삭제하기</button>
+                    `;
+                    cardList.appendChild(card);
+                });
+            } else {
+                cardList.innerHTML = '<p style="color:#aaa;">저장된 메모가 없습니다.</p>';
+            }
+        })
+        .catch(error => console.error('목록 로드 실패:', error));
+}
+
+// 3. [생성] 메모 저장 프로세스
+function createMemo() {
+    const titleInput = document.getElementById('input-title');
+    const textInput = document.getElementById('input-text');
+
+    const title = titleInput.value.trim();
+    const message = textInput.value.trim();
+
+    if (!title || !message) {
+        alert('제목과 내용을 모두 입력해 주세요!');
+        return;
+    }
+
+    fetch('/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ title: title, message: message })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.result === 'success') {
+            alert('메모가 정상적으로 저장되었습니다.');
+            titleInput.value = ''; 
+            textInput.value = '';
+            loadMemoList(); 
+        } else {
+            alert('저장 실패: ' + data.message);
+        }
+    })
+    .catch(error => console.error('저장 통신 실패:', error));
+}
+
+// 4. [삭제] 메모 삭제 프로세스 (외부 파일 분리로 인해 window 객체에 바인딩)
+window.deleteMemo = function(id) {
+    if (!confirm('이 메모를 삭제하시겠습니까?')) return;
+
+    fetch('/delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.result === 'success') {
+            alert('메모가 삭제되었습니다.');
+            loadMemoList(); 
+        } else {
+            alert('삭제 실패: ' + data.message);
+        }
+    })
+    .catch(error => console.error('삭제 통신 실패:', error));
+};
