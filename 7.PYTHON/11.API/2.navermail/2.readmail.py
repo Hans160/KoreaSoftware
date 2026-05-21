@@ -49,10 +49,6 @@ for response_part in msg_data:
         # 메일 본문 추출
         if msg.is_multipart():
             print("멀티파트는 지금은 생략")
-            # for part in msg.walk():
-            #     if part.get_content_type() == "text/plain":
-            #         body = part.get_payload(decode=True)
-            #         print("메일 본문: ", body.decode("utf-8"))
         else:
             body = msg.get_payload(decode=True).decode("utf-8")
             print("메일 본문: ", body)
