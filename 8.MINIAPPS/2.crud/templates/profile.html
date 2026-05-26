@@ -1,40 +1,25 @@
 {% extends "base.html" %}
+{% block title %}Signup Page{% endblock %}
+
 {% block content %}
-<div class="profile-container" >
-    <h2>내 프로필 정보</h2>
-    
-    <!-- 플라스크 알림 메시지 출력 -->
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <div >{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
 
-    <!-- 수정 폼: 현재 유저 정보를 표시하고 비밀번호 수정을 POST로 요청 -->
-    <form action="{{ url_for('profile') }}" method="POST">
-        <div>
-            <label>아이디 (수정 불가)</label>
-            <input type="text" value="{{ user['username'] }}" disabled>
-        </div>
-        
-        <div>
-            <label for="password">새 비밀번호 변경</label>
-            <!-- value를 지워서 빈 칸으로 시작하게 만듭니다 -->
-            <input type="password" id="password" name="password" placeholder="변경할 새 비밀번호를 입력하세요" required>
-        </div>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <p>{{ msg }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
-        <button type="submit">
-            회원 정보 수정하기
-        </button>
-    </form>
-    <!-- form 태그 바깥에 따로 두는 것을 추천합니다 -->
-    <a href="{{ url_for('delete_account') }}" onclick="return confirm('정말로 탈퇴하시겠습니까?');" style="color: red;">
-    회원 탈퇴
-    </a>
+<h2>회원 정보 수정</h2>
+<form method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" value="{{ user.username }}" readonly><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password"><br>
+    <label for="username">Email:</label>
+    <input type="text" id="email" name="email" value="{{ user.email }}"><br>
+    <button type="submit">정보수정</button>    
+</form>
 
-    
-    <p><a href="{{ url_for('home') }}">홈으로 돌아가기</a></p>
-</div>
 {% endblock %}

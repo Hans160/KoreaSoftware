@@ -7,9 +7,10 @@ from flask import session
 app = Flask(__name__)
 app.secret_key = 'my-random-key'
 
+# 사용자 DB
 users = [
     {'name': 'Alice', 'id': 'alice', 'pw': 'alice'},
-    {'name': 'Bob', 'id': 'bob', 'pw': 'bob'},
+    {'name': 'Bob', 'id': 'bob', 'pw': 'bob1234'},
     {'name': 'Charlie', 'id': 'charlie', 'pw': 'hello'},
 ]
 
@@ -55,17 +56,19 @@ def profile():
     user = session.get('user')
     if not user:
         return redirect(url_for('home')) # 로그인 안됐으면 로그인 페이지로 강제 이동
+    
     if request.method == 'POST':
         new_pw = request.form.get('new_pw')
         for u in users:
             if u['id'] == user['id']:
                 u['pw'] = new_pw
-                session['user'] = u  # 세션 정보도 업데이트
-                message = "Password changed successfully!"
-                return redirect(url_for('profile')) # 변경 후, 다시 대시보드로 이동
+                session['user'] = u  # 세션정보를 구->신 버전으로 갱신
 
+                message = '성공적으로 비밀번호가 변경되었습니다.'
+                # return render_template('profile.html', user=user, message=message)
+                return redirect(url_for('profile'))
     
-    return render_template('profile.html', user=user, message=message)
+    return render_template('profile.html', user=user)
 
 @app.route('/logout')
 def logout():

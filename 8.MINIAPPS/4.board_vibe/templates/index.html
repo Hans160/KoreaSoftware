@@ -3,105 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Board Vibe - 당신의 소중한 생각과 분위기를 카드로 남겨 공유하는 세련된 익명 게시판">
-    <title>Board Vibe - 당신의 일상을 남겨보세요</title>
-    
-    <!-- Google Fonts: Outfit & Noto Sans KR -->
+    <title>Board Vibe — 세련된 보드</title>
+    <!-- SEO 및 메타 태그 -->
+    <meta name="description" content="글래스모피즘 입력 폼과 매력적인 카드뷰로 구성된 Flask 기반의 세련된 메모 보드입니다.">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Stylesheet -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Lucide Icons (Sleek vector icons) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <div class="glass-bg-glow"></div>
-    <div class="glass-bg-glow-secondary"></div>
-    
-    <div class="container">
-        <!-- Header -->
+    <!-- 배경 글로우 데코레이션 -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="app-container">
+        <!-- 헤더 영역 -->
         <header class="app-header">
-            <h1 class="logo">BOARD <span class="accent">VIBE</span></h1>
-            <p class="subtitle">오늘 당신의 무드와 생각을 기록하세요</p>
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i data-lucide="message-square" class="pulse-icon"></i>
+                </div>
+                <h1>Board <span class="gradient-text">Vibe</span></h1>
+            </div>
+            <p class="subtitle">생각과 감정을 자유롭게 공유하는 나만의 시각적 공간</p>
         </header>
 
-        <!-- Input Form Section -->
-        <section class="form-section">
-            <div class="glass-card form-card">
-                <h2 class="section-title">New Vibe</h2>
-                
-                {% if error %}
-                <div class="error-banner" id="error-message">
-                    <span class="error-icon">⚠️</span>
-                    <span class="error-text">{{ error }}</span>
+        <!-- 메인 콘텐츠 영역 -->
+        <main class="app-main">
+            <!-- 상단: 입력 폼 섹션 -->
+            <section class="form-section">
+                <div class="glass-card form-container">
+                    <div class="form-header">
+                        <h2>새로운 바이브 남기기</h2>
+                        <span class="badge"><span class="badge-dot"></span>Ready</span>
+                    </div>
+                    
+                    <form action="{{ url_for('add_post') }}" method="POST" id="vibe-form">
+                        <div class="input-group">
+                            <label for="title">
+                                <i data-lucide="bookmark" class="input-icon"></i> 제목
+                            </label>
+                            <input type="text" id="title" name="title" placeholder="어떤 이야기를 공유하고 싶으신가요?" required maxlength="80" autocomplete="off">
+                            <div class="char-counter" id="title-counter">0 / 80</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="message">
+                                <i data-lucide="align-left" class="input-icon"></i> 내용
+                            </label>
+                            <textarea id="message" name="message" placeholder="여기에 당신의 생각이나 소식을 남겨보세요..." required maxlength="500"></textarea>
+                            <div class="char-counter" id="message-counter">0 / 500</div>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <span>등록하기</span>
+                            <i data-lucide="send"></i>
+                        </button>
+                    </form>
                 </div>
+            </section>
+
+            <!-- 중간 유틸리티 바: 검색 및 현황 -->
+            <section class="utility-section">
+                <div class="search-bar-container">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="search-input" placeholder="키워드로 바이브 검색하기..." autocomplete="off">
+                </div>
+                <div class="board-stats">
+                    총 <span class="stats-count" id="vibes-count">{{ posts|length }}</span>개의 바이브가 공유됨
+                </div>
+            </section>
+
+            <!-- 하단: 카드뷰 그리드 섹션 -->
+            <section class="cards-section">
+                {% if posts %}
+                    <div class="cards-grid" id="cards-grid">
+                        {% for post in posts %}
+                            <!-- gradient_idx에 따른 그라데이션 스타일 클래스 동적 부여 -->
+                            <article class="vibe-card card-theme-{{ post.gradient_idx }}" data-post-id="{{ post.id }}" data-search-content="{{ post.title.lower() }} {{ post.message.lower() }}">
+                                <div class="card-inner">
+                                    <div class="card-header">
+                                        <h3 class="card-title">{{ post.title }}</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-message">{{ post.message }}</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="card-meta">
+                                            <i data-lucide="calendar" class="meta-icon"></i>
+                                            <!-- UTC 시간을 한국어 포맷 또는 필터링하여 이쁘게 출력 -->
+                                            <span class="card-date" data-utc-time="{{ post.created_at }}">{{ post.created_at }}</span>
+                                        </div>
+                                        
+                                        <!-- 삭제 폼 -->
+                                        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" class="delete-form">
+                                            <button type="submit" class="delete-btn" title="바이브 삭제">
+                                                <i data-lucide="trash-2"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <!-- 등록글이 없을 때의 세련된 Empty State -->
+                    <div class="empty-state" id="empty-state">
+                        <div class="empty-icon">
+                            <i data-lucide="inbox"></i>
+                        </div>
+                        <h3>아직 등록된 바이브가 없습니다</h3>
+                        <p>상단 입력 폼을 통해 첫 번째 바이브의 주인공이 되어보세요!</p>
+                    </div>
                 {% endif %}
+                
+                <!-- 검색 결과가 없을 때의 노티스 (JS 제어용) -->
+                <div class="no-search-results hidden" id="no-search-results">
+                    <div class="empty-icon">
+                        <i data-lucide="search-code"></i>
+                    </div>
+                    <h3>검색 결과가 없습니다</h3>
+                    <p>다른 키워드를 시도하거나 맞춤법을 확인해 보세요.</p>
+                </div>
+            </section>
+        </main>
 
-                <form action="{{ url_for('add_post') }}" method="POST" class="vibe-form" id="vibe-post-form">
-                    <div class="form-group">
-                        <label for="title" class="form-label">제목</label>
-                        <input type="text" id="title" name="title" class="form-input" placeholder="어떤 분위기의 생각인가요?" required autocomplete="off" maxlength="50">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="message" class="form-label">내용</label>
-                        <textarea id="message" name="message" class="form-textarea" placeholder="당신의 이야기 혹은 오늘 느낀 vibe를 자유롭게 남겨보세요..." required rows="4" maxlength="500"></textarea>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn" id="submit-post-btn">
-                        <span>Share Vibe</span>
-                        <svg class="send-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="22" y1="2" x2="11" y2="13"></line>
-                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                        </svg>
-                    </button>
-                </form>
-            </div>
-        </section>
-
-        <!-- Card List Section -->
-        <section class="board-section">
-            <div class="board-header">
-                <h2 class="section-title">Vibe Gallery</h2>
-                <span class="badge">{{ posts|length }} Vibes</span>
-            </div>
-            
-            {% if not posts %}
-            <div class="empty-state">
-                <div class="empty-icon">✨</div>
-                <h3>게시판이 비어 있습니다</h3>
-                <p>가장 먼저 오늘의 vibe를 남겨 주시는 주인공이 되어 보세요!</p>
-            </div>
-            {% else %}
-            <div class="vibe-grid">
-                {% for post in posts %}
-                <article class="glass-card vibe-card animate-card">
-                    <div class="vibe-card-header">
-                        <h3 class="vibe-title">{{ post.title }}</h3>
-                        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" class="delete-form">
-                            <button type="submit" class="delete-btn" aria-label="글 삭제" id="delete-btn-{{ post.id }}">
-                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
-                    <div class="vibe-card-body">
-                        <p class="vibe-message">{{ post.message }}</p>
-                    </div>
-                    <div class="vibe-card-footer">
-                        <span class="vibe-time">{{ post.created_at }}</span>
-                    </div>
-                </article>
-                {% endfor %}
-            </div>
-            {% endif %}
-        </section>
+        <!-- 푸터 영역 -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Board Vibe. Crafted with passion.</p>
+        </footer>
     </div>
 
-    <footer class="app-footer-credit">
-        <p>&copy; 2026 BOARD VIBE. All rights reserved.</p>
-    </footer>
+    <!-- Custom Script -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Lucide 아이콘 초기화
+        lucide.createIcons();
+    </script>
 </body>
 </html>

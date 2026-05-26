@@ -1,11 +1,11 @@
 import sqlite3
 
 conn = sqlite3.connect('example.db')
-cursor = conn.cursor()
+cur = conn.cursor()
 
-cursor.execute('''
+cur.execute('''
     DELETE FROM users WHERE name=?
-''', ('bob',))
-             
+''', ('Bob',))
+
 conn.commit()
 conn.close()

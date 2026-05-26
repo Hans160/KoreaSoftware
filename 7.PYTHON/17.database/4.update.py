@@ -1,11 +1,11 @@
 import sqlite3
 
 conn = sqlite3.connect('example.db')
-cursor = conn.cursor()
+cur = conn.cursor()
 
-cursor.execute('''
+cur.execute('''
     UPDATE users SET age=? WHERE name=?
-''', (33, 'bob'))
-             
+''', (33, 'Bob'))
+
 conn.commit()
 conn.close()
