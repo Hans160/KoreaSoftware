@@ -1,143 +1,144 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-        <style>
-        /* 기본 바다 테마 배경 및 폰트 설정 */
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>스트림 채팅</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
         body {
+            width: 100%;
+            height: 100%;
             margin: 0;
             padding: 0;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            /* 실제 바다 느낌을 주려면 아래 주석을 풀고 무료 이미지 URL을 넣으셔도 좋습니다 */
-            background-image: linear-gradient(to bottom, rgba(16, 120, 153, 0.4), rgba(11, 48, 85, 0.85)), 
-                              url('https://unsplash.com');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+        }
+
+        body {
+            background: #f1f5f9;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            overflow: hidden;
         }
 
-        /* 채팅방 메인 컨테이너 */
         .chat-container {
-            width: 100%;
-            max-width: 500px;
-            height: 80vh;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 700px;
+            height: 90vh;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
-        /* 상단 바 타이틀 */
         .chat-header {
+            flex-shrink: 0;
+            background: #2563eb;
+            color: white;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            text-align: center;
-        }
-        .chat-header h1 {
-            margin: 0;
-            font-size: 1.3rem;
-            color: #ffffff;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            letter-spacing: 1px;
+            font-size: 22px;
+            font-weight: bold;
         }
 
-        /* 💥 스크롤 기능의 핵심: 채팅 내역 영역 */
         #chat {
             flex: 1;
+            overflow-y: auto;
             padding: 20px;
-            overflow-y: auto; /* 내용이 많아지면 스크롤바 자동 생성 */
+            background: #f8fafc;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            color: #ffffff;
-            font-size: 1rem;
-            line-height: 1.6;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            min-height: 0;
         }
 
-        /* 예쁜 스크롤바 커스텀 */
-        #chat::-webkit-scrollbar {
-            width: 6px;
-        }
-        #chat::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        #chat::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 10px;
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            line-height: 1.7;
+            word-break: break-word;
         }
 
-        /* 하단 입력 영역 상자 */
-        .input-box {
+        .user {
+            align-self: flex-end;
+            background: #2563eb;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot {
+            align-self: flex-start;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 4px;
+        }
+
+        .input-area {
+            flex-shrink: 0;
             display: flex;
             padding: 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
             gap: 10px;
+            border-top: 1px solid #e2e8f0;
+            background: white;
         }
 
-        /* 메시지 입력창 */
         #input {
             flex: 1;
-            padding: 14px 20px;
-            border: none;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.9);
-            font-size: 1rem;
-            color: #0b3055;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            font-size: 16px;
             outline: none;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-        }
-        #input::placeholder {
-            color: #a0b2c6;
         }
 
-        /* 시원한 에메랄드빛 전송 버튼 */
+        #input:focus {
+            border-color: #2563eb;
+        }
+
         #send {
-            padding: 0 24px;
             border: none;
-            border-radius: 30px;
-            background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+            background: #2563eb;
             color: white;
-            font-size: 1rem;
-            font-weight: bold;
+            padding: 0 20px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 114, 255, 0.3);
+            font-size: 16px;
+            font-weight: bold;
         }
+
         #send:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 114, 255, 0.4);
+            background: #1d4ed8;
         }
-        #send:active {
-            transform: translateY(0);
+
+        .highlight-line {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e3a8a;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 8px;
+            margin: 2px 0;
         }
     </style>
 </head>
+
 <body>
     <div class="chat-container">
-        <div class="chat-header">
-            <h1>🌊 AI 스트림 간단 버전</h1>
-        </div>
-        
-        <!-- 💥 영역 고정 및 스크롤바가 생길 곳 -->
-        <div id="chat">대화를 시작해보세요! 🏝️</div>
-        
-        <div class="input-box">
-            <input type="text" id="input" placeholder="메시지를 입력하세요..." autocomplete="off">
+        <div class="chat-header">스트림 채팅</div>
+
+        <div id="chat"></div>
+
+        <div class="input-area">
+            <input type="text" id="input" placeholder="메시지를 입력하세요..." />
+
             <button id="send">전송</button>
         </div>
     </div>
@@ -147,34 +148,76 @@
         const send = document.getElementById('send');
         const chat = document.getElementById('chat');
 
-        send.addEventListener('click', async () => {
+        function formatMessage(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<span class="highlight-line">$1</span>');
+        }
+
+        async function sendMessage() {
             const message = input.value.trim();
-            
+
+            if (!message) return;
+
+            const userDiv = document.createElement('div');
+
+            userDiv.className = 'message user';
+            userDiv.textContent = message;
+
+            chat.appendChild(userDiv);
+
+            chat.scrollTop = chat.scrollHeight;
+
+            input.value = '';
+
+            const botDiv = document.createElement('div');
+
+            botDiv.className = 'message bot';
+
+            chat.appendChild(botDiv);
+
+            chat.scrollTop = chat.scrollHeight;
+
             const response = await fetch('/stream', {
                 method: 'POST',
+
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message })
+
+                body: JSON.stringify({
+                    message,
+                }),
             });
 
-            // const data = await response.json();  //우리가 알던 응답
-            // 지금부터는 이게 아니고 event-stream으로 오는걸 data:<내용> \n\n이라고함
             const reader = response.body.getReader();
+
             const decoder = new TextDecoder();
-            let fullText ='';
+
+            let fullText = '';
+
             while (true) {
-                const { value, done } = await reader.read();
-                if (done) {
-                    break;
-                }
-                const chunk = decoder.decode(value, { stream: true });
-                fullText += chunk.replace(/\n/g, '<br>'); //서버에서 보내온 콘솔용 뉴라인(\n)을 웹용 뉴라인<br>로 바꾼다
-                chat.innerHTML = fullText;
+                const { done, value } = await reader.read();
+
+                if (done) break;
+
+                const chunk = decoder.decode(value, {
+                    stream: true,
+                });
+
+                fullText += chunk;
+
+                botDiv.innerHTML = formatMessage(fullText).replace(/\n/g, '<br>');
 
                 chat.scrollTop = chat.scrollHeight;
             }
-        })
+        }
+
+        send.addEventListener('click', sendMessage);
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
     </script>
 </body>
 </html>
