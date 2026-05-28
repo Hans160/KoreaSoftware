@@ -1,0 +1,124 @@
+/* 전반적인 웹바탕 스타일 지정 (구글 폰트 적용 및 중앙 정렬) */
+@import url('https://googleapis.com');
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* 중앙 메인 컨테이너 박스 */
+.container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+/* 제목 스타일 */
+h1 {
+    font-size: 2rem;
+    color: #1a1a1a;
+    margin-bottom: 24px;
+    font-weight: 700;
+}
+
+/* 입력 창, 버튼 가로 배치용 상자 */
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+/* 입력창 스타일 */
+input[type="text"] {
+    flex: 1;
+    padding: 14px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+input[type="text"]:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 8px rgba(74, 144, 226, 0.2);
+}
+
+/* 생성 버튼 스타일 */
+button {
+    padding: 14px 24px;
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(74, 144, 226, 0.2);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(74, 144, 226, 0.3);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* 결과 소제목 */
+h2 {
+    font-size: 1.2rem;
+    color: #666;
+    text-align: left;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 8px;
+}
+
+/* 결과 리스트 스타일 */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* 각 회사 이름 아이템 스타일 */
+ul li {
+    padding: 12px 16px;
+    background-color: #f8fafc;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #2c3e50;
+    border-left: 4px solid #4a90e2;
+    animation: fadeIn 0.4s ease forwards;
+}
+
+/* 리스트 등장 애니메이션 효과 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
