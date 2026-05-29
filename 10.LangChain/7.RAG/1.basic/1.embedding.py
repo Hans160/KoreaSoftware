@@ -18,7 +18,7 @@ sentences = [
     "파이썬은 인기 있는 프로그래밍 언어다."
 ]
 
-vectors = embeddings.embed_documents(sentences)
+vectors = embeddings.embed_documents(sentences)A
 
 def cosine_similarity(a, b):
     a, b = np.array(a), np.array(b)
