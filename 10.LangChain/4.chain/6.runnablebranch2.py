@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnableBranch
+from langchain_core.runnables import RunnableBranch, RunnableLambda
 
 load_dotenv()
 
@@ -20,9 +20,18 @@ def make_chain(role):
     )
 
 # 개발자냐/요리사냐/일반
-code_chain = make_chain("당신은 파이썬 개발자입니다.")
-cook_chain = make_chain("당신은 요리 전문가입니다.")
-general_chain = make_chain("당신은 일반 어시스턴트 입니다.")
+code_chain = (
+    RunnableLambda(lambda x: print(">>> 개발자 코드 실행") or x)
+    | make_chain("당신은 파이썬 개발자입니다.")
+)
+cook_chain = (
+    RunnableLambda(lambda x: print(">>> 요리사 코드 실행") or x)
+    | make_chain("당신은 요리 전문가입니다.")
+)
+general_chain = (
+    RunnableLambda(lambda x: print(">>> 일반 코드 실행") or x)
+    | make_chain("당신은 일반 어시스턴트 입니다.")
+)
 
 branch = RunnableBranch(
     (
@@ -37,9 +46,10 @@ branch = RunnableBranch(
 )
 
 questions = [
-    "파이썬 리스트 정렬 코드 알려줘",
-    "김치찌개 레시피 알려줘",
-    "오늘 날씨 어때?"
+    # "파이썬 리스트 정렬 코드 알려줘",
+    # "김치찌개 레시피 알려줘",
+    # "오늘 날씨 어때?",
+    "된장찌개 파이썬 레시피 알려줘"     # <-- 이건 어디를 탈것인가?? 고민해보기..
 ]
 
 for q in questions:

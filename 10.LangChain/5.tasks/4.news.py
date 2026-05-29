@@ -1,87 +1,58 @@
-# 목적 - 뉴스 입력 -> 요약
-#                 -> 감정분석
-#                 -> 카테고리 분석  
-#RunnableParallel
-
-# 목적 - 뉴스 입력 -> 요약
-#                 -> 감정분석
-#                 -> 카테고리 분석  
-# RunnableParallel 활용 구조 완성
+# 목적 - 뉴스를 분석한다.
+# 뉴스 입력 -> 요약 
+#          -> 감정분석 
+#          -> 카테고리 분석
+# RunnableParallel
 
 from dotenv import load_dotenv
-from langchain_core.prompts import ChatPromptTemplate
+
 from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-# 💡 핵심 컴포넌트인 RunnableParallel을 임포트합니다.
+
 from langchain_core.runnables import RunnableParallel
 
 load_dotenv()
-llm = ChatOpenAI(model='gpt-4o-mini', temperature=0.5)  
 
-# =====================================================================
-# 1. 각 목적별 프롬프트 템플릿 정의 (가독성이 좋은 최신 튜플 스타일 활용)
-# =====================================================================
+llm = ChatOpenAI(model="gpt-4o-mini")
 
-# 1-1. 요약 프롬프트
-summary_prompt = ChatPromptTemplate.from_messages([
-    ("system", "당신은 전문 문장 요약가 입니다."),
-    ("human", "다음의 긴 내용을 1개의 문장으로 핵심만 요약하시오:\n\n{article}")
-])
+# chain 이란? prompt | llm | parser
+prompt1 = ChatPromptTemplate.from_template("다음 뉴스를 2~3문장으로 요약해줘.\n\n{news}")
+summary_chain = prompt1 | llm | StrOutputParser()
 
-# 1-2. 감정 분석 프롬프트
-sentiment_prompt = ChatPromptTemplate.from_messages([
-    ("system", "당신은 냉철한 금융·부동산 뉴스 감정 분석가입니다."),
-    ("human", "다음 뉴스 기사의 전반적인 어조를 분석하여 [긍정, 부정, 중립] 중 하나로 답변하고, 그렇게 판단한 이유를 1문장으로 덧붙이세요:\n\n{article}")
-])
-
-# 1-3. 카테고리 분석 프롬프트
-category_prompt = ChatPromptTemplate.from_messages([
-    ("system", "당신은 뉴스를 정확히 분류하는 에디터입니다."),
-    ("human", "다음 뉴스 기사에 가장 적합한 카테고리(예: 부동산, 정치, 경제, 사회, 테크 등)를 단어 하나로 지정하고 관련 키워드 3개를 뽑아주세요:\n\n{article}")
-])
-
-
-# =====================================================================
-# 2. 각 목적별 서브 체인 정의
-# =====================================================================
-summary_chain = summary_prompt | llm | StrOutputParser()
-sentiment_chain = sentiment_prompt | llm | StrOutputParser()
-category_chain = category_prompt | llm | StrOutputParser()
-
-
-# =====================================================================
-# 3. RunnableParallel을 사용하여 서브 체인들을 병렬로 묶기
-# =====================================================================
-# 이렇게 묶어두면 단 한 번의 invoke 호출로 3개의 체인에 {article}이 동시에 전달되어 처리됩니다.
-total_analysis_chain = RunnableParallel(
-    summary=summary_chain,
-    sentiment=sentiment_chain,
-    category=category_chain
+sentiment_chain = (
+    ChatPromptTemplate.from_template("다음 뉴스의 전반적 감성을 한 단어로 분석해줘 (긍정 / 부정 / 중립).\n\n{news}")
+    | llm
+    | StrOutputParser()
 )
 
+category_chain = (
+    ChatPromptTemplate.from_template("다음 뉴스의 카테고리를 한 단어로 분석해줘 (정치/경제/사회/IT/스포츠/기타).\n\n{news}")
+    | llm
+    | StrOutputParser()
+)
 
-# =====================================================================
-# 4. 데이터 입력 및 통합 실행
-# =====================================================================
-input_text = {
-    "article": "서울 전세시장의 불안이 아파트를 넘어 빌라·다세대·연립 등 비아파트 시장 전반으로 확산되고 있다. "
-                "전세 물건 부족과 임대료 상승이 장기화되는 가운데, 서민과 청년층의 주거 진입 통로 역할을 해온 비아파트 공급마저 급감하면서 주거 시장 불안이 비아파트 시장까지 빠르게 번지고 있다는 우려가 커지고 있다. "
-                "이에 정부는 비아파트 주택 공급 촉진 대책을 발표했지만, 업계에서는 세제·금융 등 추가 규제 완화 방안이 빠진 만큼 단기간 내 공급 확대 효과를 기대하기 어렵다는 지적이 나온다."
-}
+final_chain = RunnableParallel({
+    "summary": summary_chain,
+    "sentiment": sentiment_chain,
+    "category": category_chain
+})
 
-# 병렬 체인 실행
-result = total_analysis_chain.invoke(input_text)
-
-# 결과 출력
-print("=" * 60)
-print("🔍 [1. 뉴스 요약 결과]")
-print(result["summary"])
-print("-" * 60)
-print("📊 [2. 감정 분석 결과]")
-print(result["sentiment"])
-print("-" * 60)
-print("🏷️ [3. 카테고리 분석 결과]")
-print(result["category"])
-print("=" * 60)
+news = """
+알리바바닷컴이 중소기업(SME)을 위한 에이전틱 AI 비즈니스 팀 ‘Accio Work(액시오 워크)’를 한국 시장에 공식 출시했다. 단순 질의응답형 AI를 넘어 실제 비즈니스 업무를 자율적으로 수행하는 ‘에이전트 투 에이전트(A2A·Agent to Agent)’ 시대를 본격화하겠다는 구상이다.
 
 
+알리바바닷컴은 28일 롯데호텔 서울에서 ‘액시오 워크 한국 공식 출시 기자간담회’를 열고 시장 조사부터 상품 기획, 글로벌 소싱, 가격 협상, 상품 등록, 마케팅, 스토어 운영까지 전 과정을 AI 에이전트가 수행하는 액시오 워크를 공개했다.
+
+
+이번에 공개된 액시오 워크의 핵심은 단순 보조 도구 수준을 넘어 실제 업무를 실행하는 ‘플러그 앤 플레이형 AI 에이전트 팀’이라는 점이다. 사용자의 명령을 기다리는 기존 AI 어시스턴트 개념에서 벗어나 목표를 설정하면 AI가 스스로 업무를 수행하고 운영을 지속하는 구조다.
+
+
+션 양 알리바바닷컴 아시아태평양(APAC) 지역 총괄 본부장은 이날 “AI는 더 이상 미래 기술이 아니라 글로벌 무역 운영 방식을 바꾸는 핵심 인프라가 되고 있다”며 “앞으로 무역 업계는 사람 대 사람 거래를 넘어 에이전트 대 에이전트(A2A) 거래 시대로 진입하게 될 것”이라고 말했다.
+"""
+
+result = final_chain.invoke({"news": news})
+print(f"원문: {news}")
+print(f"요약: {result["summary"]}")
+print(f"감성: {result["sentiment"]}")
+print(f"카테고리: {result["category"]}")

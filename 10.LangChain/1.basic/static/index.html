@@ -1,59 +1,42 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회사 이름 생성기</title>
-    <!-- 여기에 CSS 연결 코드가 들어갑니다 -->
-    <link rel="stylesheet" href="/static/style.css">
+    <title>SPC 작명소</title>
 </head>
 <body>
-    <!-- 레이아웃 정렬을 위해 전체 요소를 container 클래스로 감싸줍니다 -->
-    <div class="container">
-        <h1>회사 이름 생성기</h1>
-        
-        <div class="input-group">
-            <input type="text" id="userInput" placeholder="회사의 상품명을 입력하시오">
-            <button id="send">이름 생성</button>
-        </div>
-
-        <h2>결과</h2>
-        <ul id="resultList"></ul>
-    </div>
+    <h1>회사 이름 생성기</h1>
+    <input type="text" id="userInput" placeholder="회사의 상품명을 입력하시오">
+    <button id="send">이름 생성</button>
+    <h2>결과</h2>
+    <ul id="resultList"></ul>
 
     <script>
-        const userInput = document.getElementById('userInput');
-        const send = document.getElementById('send');
-        const resultList = document.getElementById('resultList');
+        // 1. 전송이 눌리면
+        document.getElementById('send').addEventListener('click', async () => {
+            // 2. 입력값 가져다가
+            const userInput = document.getElementById('userInput').value;
 
-        send.addEventListener('click', async () => {
-            // 버튼 클릭 시 사용자가 지루하지 않게 "생성 중..." 메시지 노출
-            resultList.innerHTML = '<li>🪄 어울리는 이름을 생각하는 중...</li>';
+            // 3. 백엔드로 보낸다.
+            const response = await fetch('/api/name', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({product: userInput})
+            });
+            // 4. 결과를 받아와서
+            const data = await response.json();
+            console.log(data);
+            // 5. 화면에 출력한다.
+            const result = document.getElementById('resultList');
+            result.innerHTML = ''; // 이전 결과 클리어
 
-            try {
-                const response = await fetch('/api/name', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ product: userInput.value })
-                });
-                
-                const data = await response.json();
-                resultList.innerHTML = '';
-                
-                data.chatbot.forEach((name) => {
-                    if (name.trim() !== '') {
-                        const li = document.createElement('li');
-                        li.innerText = name;
-                        resultList.appendChild(li);
-                    }
-                });
-            } catch (error) {
-                console.error('에러 발생:', error);
-                resultList.innerHTML = '<li style="color: #e74c3c; border-left-color: #e74c3c;">서버 연결에 실패했습니다.</li>';
-            }
-        });
+            data.chatbot.forEach((name) => {
+                const li = document.createElement('li');
+                li.textContent = name;
+                result.appendChild(li);
+            });
+        })
     </script>
 </body>
 </html>

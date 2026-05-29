@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnableLambda
 
 load_dotenv()
 
@@ -15,7 +16,7 @@ prompt = ChatPromptTemplate.from_messages([
     ("user", "{company} 회사에서 {product} 을 만드는데, 이 제품명을 만들어주시오.")
 ])
 
-chain = prompt | llm | parser      # <-- 이걸 LCEL (LangChain Expression Language)
+chain = prompt | llm | parser | RunnableLambda(lambda x: {"response": x})
 
 inputs = {"company": "AI 첨단 기술 회사", "product": "화장품"}
 
