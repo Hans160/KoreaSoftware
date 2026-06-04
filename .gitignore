@@ -10,3 +10,7 @@
 *.sqlite3
 history.json
 chorma_db/
+
+
+# 임시파일
+TEMP
